@@ -1,6 +1,7 @@
-const fs = require('fs');
+import coins_media21 from './data/coins_media21.json';
 
-const json = fs.readFileSync('/data/coins_media21.json');
-const data = JSON.parse(json);
+function Check() {
+    console.log(coins_media21);
+}
 
-console.log(data);
+export default Check;
