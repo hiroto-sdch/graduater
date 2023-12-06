@@ -28,6 +28,7 @@ function App() {
 
   const isUploadButtonDisabled = !selectedMajor;
 
+
   return (
     <div className='App'>
       <header className='App-header'>
