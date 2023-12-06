@@ -1,7 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
+import Check from './check'
 
 function App() {
+  Check();
+
   return (
     <div className="App">
       <header className="App-header">
