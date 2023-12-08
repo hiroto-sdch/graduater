@@ -24,13 +24,13 @@ function Check(gradeslist: Course[], major: string) {
     }
 
     let checklist: {[name: string]: boolean} = {};
-
     let compulsory: string[] = requirement["courses"]["compulsory"];
     compulsory.forEach((e) => {
         checklist[e]=gradeslist.some((grades) => {
                         return grades["name"] === e && !["D", "F", "履修中"].includes(grades["grade"]);
                     });
     });
+    
     console.log(checklist);
 }
 
