@@ -3,28 +3,38 @@ import React, { useState } from 'react';
 
 const { Option } = Select;
 
-const Dropdown = ({ onChange }) => {
-    const [selectedCollege, setSelectedCollege] = useState(null);
-    const [selectedDepartment, setSelectedDepartment] = useState(null);
-    const handleCollegeChange = (value) => {
-      setSelectedCollege(value);
-      setSelectedDepartment(null);
-      if (onChange) {
-        onChange({ college: value, department: null, major: null });
-      }
-    };
-    const handleDepartmentChange = (value) => {
-      setSelectedDepartment(value);
-  
-      if (onChange) {
-        onChange({ college: selectedCollege, department: value, major: null });
-      }
-    };
-    const handleMajorChange = (value) => {
-      if (onChange) {
-        onChange({ college: selectedCollege, department: selectedDepartment, major: value });
-      }
-    };
+interface DropdownProps {
+  onChange?: (selectedValues: { college: string | null; department: string | null; major: string | null }) => void;
+}
+
+const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
+  const [selectedCollege, setSelectedCollege] = useState<string | null>(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
+  const [selectedMajor, setSelectedMajor] = useState<string | null>(null);
+
+  const handleCollegeChange = (value: string) => {
+    setSelectedCollege(value);
+    setSelectedDepartment(null);
+    setSelectedMajor(null);
+    if (onChange) {
+      onChange({ college: value, department: null, major: null });
+    }
+  };
+
+  const handleDepartmentChange = (value: string) => {
+    setSelectedDepartment(value);
+    setSelectedMajor(null);
+    if (onChange) {
+      onChange({ college: selectedCollege, department: value, major: null });
+    }
+  };
+
+  const handleMajorChange = (value: string) => {
+    setSelectedMajor(value);
+    if (onChange) {
+      onChange({ college: selectedCollege, department: selectedDepartment, major: value });
+    }
+  };
   
     return (
       <div>
@@ -32,6 +42,7 @@ const Dropdown = ({ onChange }) => {
           style={{ width: 300 }}
           placeholder="学群を選択してください。"
           onChange={handleCollegeChange}
+          value={selectedCollege} //Todo:後で消す
         >
           <Option value="人文・文化学群">人文・文化学群</Option>
           <Option value="社会・国際学群">社会・国際学群</Option>
@@ -46,9 +57,10 @@ const Dropdown = ({ onChange }) => {
   
         {<Select
             style={{ width: 300, marginLeft: 10 }}
-            placeholder="学類を選択してください。"
+            placeholder={selectedDepartment ? undefined : "学類を選択してください。"}
             onChange={handleDepartmentChange}
             disabled={!selectedCollege}
+            value={selectedDepartment}
           >
             {selectedCollege === '人文・文化学群' && (
               <>
@@ -115,9 +127,10 @@ const Dropdown = ({ onChange }) => {
   
         {<Select
             style={{ width: 300, marginLeft: 10 }}
-            placeholder="主専攻を選択してください。"
+            placeholder={selectedMajor ? undefined : "主専攻を選択してください。"}
             onChange={handleMajorChange}
             disabled={!selectedDepartment}
+            value={selectedMajor}
           >
             {selectedDepartment === '人文学類' && (
               <>
@@ -256,7 +269,6 @@ const Dropdown = ({ onChange }) => {
               <>
                 <Option value="医療科学">医療科学</Option>
                 <Option value="国際医療科学">国際医療科学</Option>
-                <Option value="知能情報メディア">知能情報メディア</Option>
               </>
             )}
             {selectedDepartment === '体育専門' && (
