@@ -2,6 +2,7 @@ import coins_media21 from './data/coins_media21.json';
 import coins_soft21 from './data/coins_soft21.json';
 import coins_sys21 from './data/coins_sys21.json';
 import Course from './Course';
+import CheckSelect from './CheckSelect';
 
 function Check(gradeslist: Course[], major: string) {
     console.log(coins_soft21);
@@ -32,6 +33,8 @@ function Check(gradeslist: Course[], major: string) {
     });
     
     console.log(checklist);
+
+    CheckSelect(gradeslist, requirement);
 }
 
 export default Check;
