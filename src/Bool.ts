@@ -1,5 +1,5 @@
 export function Check(){
-    return false;
+    return true;
 }
 
 export default Check
