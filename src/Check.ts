@@ -34,18 +34,24 @@ function Check(gradeslist: Course[], major: string) {
                 return syn.replace(/\[|\]|\s|\'/g,"").split(",");
             });
 
-            // console.log(hoge);
-            hoge.forEach((syn) => {
+            hoge.some((syn) => {
+                syn.forEach((_hoge) => {
+                    gradeslist.forEach((grades) => {
+                        if (_hoge.includes(grades["name"])){
+                            grades.checked = true;
+                        }
+                    });
+                });
                 if (syn.every((_hoge) => (
                     gradeslist.some((grades) => 
-                    grades["name"] === _hoge && !["D", "F", "履修中"].includes(grades["grade"])
+                    grades["name"] === _hoge && !["D", "F"].includes(grades["grade"])
                     )
                     )
                     )) {
-                    checklist[e] = true;
+                    return checklist[e] = true;
                 }
                 else{
-                    checklist[e] = false;
+                    return checklist[e] = false;
                 }
             });
 
@@ -55,9 +61,10 @@ function Check(gradeslist: Course[], major: string) {
             let count :number = 0;
        
             codes.forEach((code) => {
-                gradeslist.forEach((grade) => {
-                    if (grade.id.startsWith(code) && !["D", "F", "履修中"].includes(grade.grade)){
-                        count += Number(grade.unit);
+                gradeslist.forEach((grades) => {
+                    if (grades.id.startsWith(code) && !["D", "F"].includes(grades.grade)){
+                        count += Number(grades.unit);
+                        grades.checked = true;
                     }
                 });
             });
@@ -65,14 +72,23 @@ function Check(gradeslist: Course[], major: string) {
         }
         else {
             checklist[e]=gradeslist.some((grades) => {
-                return grades["name"] === e && !["D", "F", "履修中"].includes(grades["grade"]);
+                return grades["name"] === e && !["D", "F"].includes(grades["grade"]);
             });
         }
     });
-    
-    console.log(checklist);
 
-    CheckSelect(gradeslist, requirement);
+    let failureunit: string[] = [];
+    Object.keys(checklist).forEach((key) => {
+        if (checklist[key] === false){
+            failureunit.push(key);
+        }
+    });
+    gradeslist.forEach((grades) => {
+        if (Object.keys(checklist).includes(grades["name"])){
+            grades.checked = true;
+        }
+    });
+    
 }
 
 export default Check;
