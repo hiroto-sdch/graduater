@@ -23,9 +23,12 @@ function Check(gradeslist: Course[], major: string) {
             break;
     }
 
-    CheckCompulsory(gradeslist, requirement);
-    CheckSelect(gradeslist, requirement);
+    let data: {[name:string] : any} = {};
+    data["Compulsory"] = CheckCompulsory(gradeslist, requirement);
+    data["Select"] = CheckSelect(gradeslist, requirement);
+    console.log(data);
 
+    return data;
 }
 
 export default Check;
