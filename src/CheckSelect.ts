@@ -61,7 +61,7 @@ function CheckSelect(gradeslist: Course[], requirement: any){
 
     gradeslist.filter((e) => (!["D", "F"].includes(e.grade))).forEach((e) => {
         selectRequirements.forEach((req, reqi) => {
-            if(!e.checked && (!req.not && matchRequire(e.id, req.ids)) || (req.not && !matchRequire(e.id, req.ids))){
+            if(!e.checked && ((!req.not && matchRequire(e.id, req.ids)) || (req.not && !matchRequire(e.id, req.ids)))){
                 if(selectCheckList[reqi].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < req.max &&   // CheckList 内の単位数を合計し、上限と比較
                         groupCheckList[req.group_id].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < groups[req.group_id].max){
                     selectCheckList[reqi].push(e);
