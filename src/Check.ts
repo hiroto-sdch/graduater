@@ -7,8 +7,8 @@ import CheckSelect from './CheckSelect';
 function Check(gradeslist: Course[], major: string) {
     console.log(coins_soft21);
 
+    // 卒業要件のJSONを格納
     let requirement: any;
-
     switch (major) {
         case "coins_soft21":
             requirement = coins_soft21;
@@ -24,12 +24,31 @@ function Check(gradeslist: Course[], major: string) {
             break
     }
 
-    let checklist: {[name: string]: boolean} = {};
-    let compulsory: string[] = requirement["courses"]["compulsory"];
+    let checklist: {[name: string]: boolean} = {};  // 科目名：履修したかどうか
+    let compulsory: string[] = requirement["courses"]["compulsory"];    // 必修単位の科目名
     compulsory.forEach((e) => {
-        checklist[e]=gradeslist.some((grades) => {
-                        return grades["name"] === e && !["D", "F", "履修中"].includes(grades["grade"]);
-                    });
+        if (e.includes('//')) {
+            let tmp :string[] = e.split('//');
+            let hoge : (string)[][] = tmp.map((syn) => {
+                return syn.replace(/\[|\]|\s|\'/g,"").split(",");
+            });
+            console.log(hoge);
+            hoge.forEach((syn) => {
+                if (syn.every((_hoge) => (
+                    gradeslist.some((grades) => 
+                    grades["name"] === _hoge && !["D", "F", "履修中"].includes(grades["grade"])
+                    )
+                    )
+                    )) {
+                    checklist[e]= true;
+                }
+            });
+        }
+        else {
+            checklist[e]=gradeslist.some((grades) => {
+                return grades["name"] === e && !["D", "F", "履修中"].includes(grades["grade"]);
+            });
+        }
     });
     
     console.log(checklist);
