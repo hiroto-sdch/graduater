@@ -4,6 +4,7 @@ interface Course {
   unit : number;
   grade : string;
   year : number;
+  checked : boolean;
 }
 
 export default Course;

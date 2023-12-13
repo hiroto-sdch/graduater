@@ -12,7 +12,8 @@ function CSVconvert(csvdata: string) : Course[] {
                 name: fields[3],
                 unit: Number(fields[4]),
                 grade: fields[7],
-                year: Number(fields[9])}
+                year: Number(fields[9]),
+                checked : false}
     });
 }
 
