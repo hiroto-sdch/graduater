@@ -83,10 +83,14 @@ function CheckSelect(gradeslist: Course[], requirement: any){
         });
     });
 
-    console.log(groupCheckList);
-    console.log(selectCheckList);
-    console.log(groupCheckList.map((tmp) => tmp.map((e)=>e.unit).reduce((p,e) => (p+e), 0)))
-    console.log(gradeslist);
+    const tmp: {[name : string]: number} = {};
+    groups.forEach((e, i) => {
+        const hoge = (e.min - groupCheckList[i].map((e) => e.unit).reduce((p, e) => p+e , 0)); 
+        tmp[e.name] = (hoge > 0 ? hoge : 0);
+    });
+
+    return tmp;
+
 }
 
 export default CheckSelect;
