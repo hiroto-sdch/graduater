@@ -5,7 +5,7 @@ function CheckCompulsory(gradeslist: Course[], requirement: any) {
 
     let checklist: {[name: string]: boolean} = {};  // 科目名：履修したかどうか
     let compulsory: string[] = requirement["courses"]["compulsory"];    // 必修単位の科目名
-    
+
     compulsory.forEach((e) => {
         if (e.includes('//')) {
             let tmp :string[] = e.split('//');
@@ -68,6 +68,7 @@ function CheckCompulsory(gradeslist: Course[], requirement: any) {
         }
     });
     
+    return failureunit;
 }
 
 export default CheckCompulsory;
