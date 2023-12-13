@@ -1,4 +1,5 @@
 import Course from './Course';
+import codeType from './data/courseCodeTypes';
 
 interface SelectRequire {
   ids : string[];
@@ -16,7 +17,24 @@ interface Group{
     name : string;
 }
 
-function CheckSelect(gradeslist: Course[], requirement: any) {
+function CheckSelect(gradeslist: Course[], requirement: any){
+    const matchRequire = (id : string, require : string[]) : boolean => {
+        return require.some((e) => {
+            if(e.startsWith("*")){ // code type 使用
+                const c = codeType[e.slice(1) as keyof typeof codeType]
+                if((c.except as string[]).some((e) => id.startsWith(e))){
+                    return false;
+                }
+                if(c.codes.some((e) => id.startsWith(e))){
+                    return true;
+                }
+                return false;
+            } else {
+                return require.some((e) => id.startsWith(e));
+            }
+        });
+    }
+
     const selectRequirements : SelectRequire[] = requirement["courses"]["select"].map((e:(string[] | number | boolean | string)[]) => {
         return {
             ids : e[0],
@@ -35,26 +53,40 @@ function CheckSelect(gradeslist: Course[], requirement: any) {
             name: e[3],
         }
     });
-    let selectCheckList : number[] = selectRequirements.map((e) => (0));
-    let groupCheckList : number[] = [];
-    groups.forEach((e) => {groupCheckList[e.id] = 0;});
+    let selectCheckList : (Course[])[] = selectRequirements.map((e) => ([]));
+    let groupCheckList : (Course[])[] = [];
+    groups.forEach((e) => {groupCheckList[e.id] = [];});
 
-    gradeslist.forEach((e, i) => {
-        selectRequirements.filter((e) => (!e.not)).forEach((req, reqi) => {
-            (req.ids).forEach((req_id) => {
-                if(e.id.startsWith(req_id)){
-                    if(selectCheckList[reqi] < req.max && groupCheckList[req.group_id] < groups[req.group_id].max){
-                        selectCheckList[reqi] += e.unit;
-                        groupCheckList[req.group_id] += e.unit;
-                        gradeslist.splice(i, 1);
-                    }
+    let checked : Course[] = [];
+
+    gradeslist.filter((e) => (!["D", "F"].includes(e.grade))).forEach((e) => {
+        selectRequirements.forEach((req, reqi) => {
+            if(!e.checked && (!req.not && matchRequire(e.id, req.ids)) || (req.not && !matchRequire(e.id, req.ids))){
+                if(selectCheckList[reqi].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < req.max &&   // CheckList 内の単位数を合計し、上限と比較
+                        groupCheckList[req.group_id].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < groups[req.group_id].max){
+                    selectCheckList[reqi].push(e);
+                    groupCheckList[req.group_id].push(e);
+                    e.checked = true;
                 }
-            });
+            }
+             
+            // .forEach((req_id) => {
+            //     if(!e.checked && ((!req.not && e.id.startsWith(req_id)) || (req.not && !e.id.startsWith(req_id)))){
+            //         if(selectCheckList[reqi].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < req.max &&   // CheckList 内の単位数を合計し、上限と比較
+            //                 groupCheckList[req.group_id].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < groups[req.group_id].max){
+            //             selectCheckList[reqi].push(e);
+            //             groupCheckList[req.group_id].push(e);
+            //             e.checked = true;
+            //         }
+            //     }
+            // });
         });
     });
 
     console.log(groupCheckList);
     console.log(selectCheckList);
+    console.log(groupCheckList.map((tmp) => tmp.map((e)=>e.unit).reduce((p,e) => (p+e), 0)))
+    console.log(gradeslist);
 }
 
 export default CheckSelect;
