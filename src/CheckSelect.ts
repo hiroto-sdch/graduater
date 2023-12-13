@@ -17,7 +17,7 @@ interface Group{
     name : string;
 }
 
-function CheckSelect(gradeslist: Course[], requirement: any){
+function CheckSelect(gradeslist: Course[], requirement: any): {[name : string]: number} {
     const matchRequire = (id : string, require : string[]) : boolean => {
         return require.some((e) => {
             if(e.startsWith("*")){ // code type 使用
