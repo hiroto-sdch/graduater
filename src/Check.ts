@@ -3,6 +3,7 @@ import coins_soft21 from './data/coins_soft21.json';
 import coins_sys21 from './data/coins_sys21.json';
 import Course from './Course';
 import codeType from './data/courseCodeTypes';
+import CheckSelect from './CheckSelect';
 
 function Check(gradeslist: Course[], major: string) {
     console.log(coins_soft21);
@@ -88,9 +89,6 @@ function Check(gradeslist: Course[], major: string) {
         }
     });
     
-    // console.log(checklist);
-    // console.log(failureunit);
-    // console.log(gradeslist);
 }
 
 export default Check;
