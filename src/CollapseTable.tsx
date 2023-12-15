@@ -1,4 +1,3 @@
-import { type } from "@testing-library/user-event/dist/type";
 import { Collapse, Table } from "antd";
 import React from "react";
 

@@ -10,7 +10,7 @@ function CheckCompulsory(gradeslist: Course[], requirement: any) {
         if (e.includes('//')) {
             let tmp :string[] = e.split('//');
             let hoge : (string)[][] = tmp.map((syn) => {
-                return syn.replace(/\[|\]|\s|\'/g,"").split(",");
+                return syn.replace(/\[|\]|\s|'/g,"").split(",");
             });
 
             hoge.some((syn) => {

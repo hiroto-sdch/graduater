@@ -57,8 +57,6 @@ function CheckSelect(gradeslist: Course[], requirement: any): {[name : string]: 
     let groupCheckList : (Course[])[] = [];
     groups.forEach((e) => {groupCheckList[e.id] = [];});
 
-    let checked : Course[] = [];
-
     gradeslist.filter((e) => (!["D", "F"].includes(e.grade))).forEach((e) => {
         selectRequirements.forEach((req, reqi) => {
             if(!e.checked && ((!req.not && matchRequire(e.id, req.ids)) || (req.not && !matchRequire(e.id, req.ids)))){
@@ -69,17 +67,6 @@ function CheckSelect(gradeslist: Course[], requirement: any): {[name : string]: 
                     e.checked = true;
                 }
             }
-             
-            // .forEach((req_id) => {
-            //     if(!e.checked && ((!req.not && e.id.startsWith(req_id)) || (req.not && !e.id.startsWith(req_id)))){
-            //         if(selectCheckList[reqi].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < req.max &&   // CheckList 内の単位数を合計し、上限と比較
-            //                 groupCheckList[req.group_id].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < groups[req.group_id].max){
-            //             selectCheckList[reqi].push(e);
-            //             groupCheckList[req.group_id].push(e);
-            //             e.checked = true;
-            //         }
-            //     }
-            // });
         });
     });
 
