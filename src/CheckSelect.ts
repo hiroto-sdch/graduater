@@ -89,6 +89,8 @@ function CheckSelect(gradeslist: Course[], requirement: any): {[name : string]: 
         tmp[e.name] = (hoge > 0 ? hoge : 0);
     });
 
+    console.log(selectCheckList.map((e) => e.map((e)=>e.unit).reduce((p,e) => (p+e), 0)));
+
     return tmp;
 
 }
