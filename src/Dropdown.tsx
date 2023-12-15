@@ -236,9 +236,9 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
             )}
             {selectedDepartment === '情報科学類' && (
               <>
-                <Option value="ソフトウェアサイエンス">ソフトウェアサイエンス</Option>
-                <Option value="情報システム">情報システム</Option>
-                <Option value="知能情報メディア">知能情報メディア</Option>
+                <Option value="coins_soft21">ソフトウェアサイエンス</Option>
+                <Option value="coins_sys21">情報システム</Option>
+                <Option value="coins_media21">知能情報メディア</Option>
               </>
             )}
             {selectedDepartment === '情報メディア創成学類' && (
