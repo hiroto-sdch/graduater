@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 const { Option } = Select;
 
 interface DropdownProps {
-  onChange?: (selectedValues: { college: string | null; department: string | null; major: string | null }) => void;
+  onChange?: (selectedValues: { college: string | null; department: string | null; major: string}) => void;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
@@ -17,7 +17,7 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
     setSelectedDepartment(null);
     setSelectedMajor(null);
     if (onChange) {
-      onChange({ college: value, department: null, major: null });
+      onChange({ college: value, department: null, major: "" });
     }
   };
 
@@ -25,7 +25,7 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
     setSelectedDepartment(value);
     setSelectedMajor(null);
     if (onChange) {
-      onChange({ college: selectedCollege, department: value, major: null });
+      onChange({ college: selectedCollege, department: value, major: "" });
     }
   };
 
