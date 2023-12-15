@@ -1,10 +1,10 @@
 import { UploadOutlined } from '@ant-design/icons/lib/icons';
-import { Typography, Upload, Button, Collapse, Table } from 'antd';
+import { Typography, Upload, Button } from 'antd';
 import React, { useState } from 'react';
 import Check from './Check';
 import Dropdown from './Dropdown';
 import CSVconvart from './Csvconvert';
-import { CollapseTable } from './CollapseTable';
+import { CollapseTable, SelectTable } from './CollapseTable';
 
 const { Title } = Typography;
 
@@ -14,29 +14,32 @@ const App: React.FC<AppProps> = () => {
   const [isupload, setIsupload] = useState(false);
   const [selectedMajor, setSelectedMajor] = useState<string>("");
   const [Message, setMessage] = useState<string[]>([]);
+  const [SelectMessage, setSelectMessage] = useState<string[]>([]);
 
   const handleFile = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
       const text = CSVconvart(e.target?.result as string);
-      console.log(text);
+      // console.log(text);
       const fusoku = Check(text, selectedMajor);
       console.log(`現在の選択主専攻:${selectedMajor}。`);
-      console.log(`${file.name} が正常にアップロードされました！`);
+      // console.log(`${file.name} が正常にアップロードされました！`);
       setIsupload(true);
       // console.log(fusoku)
       const {Compulsory, Select} = fusoku;
-      console.log(Select);
-      setMessage(Compulsory)
+      // console.log(Select);
+      setMessage(Compulsory);
+      setSelectMessage(Select);
       // console.log(Compulsory);
+      // console.log(typeof Select);
     };
     reader.readAsText(file);
     return false;
   };
 
   const handleDropdownChange = (selectedValues: { college: string | null; department: string | null; major: string }) => {
-    console.log('Dropdown selected:', selectedValues);
     setSelectedMajor(selectedValues.major);
+    console.log('Dropdown selected:', selectedValues);
   };
 
   return (
@@ -54,6 +57,7 @@ const App: React.FC<AppProps> = () => {
               </Button>
             </Upload>
             {isupload && <CollapseTable fusoku={Message}></CollapseTable>}
+            {isupload && <SelectTable Select={SelectMessage}></SelectTable>}
           </div>
         </div>
       </header>

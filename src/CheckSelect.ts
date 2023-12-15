@@ -86,6 +86,7 @@ function CheckSelect(gradeslist: Course[], requirement: any): {[name : string]: 
     selectRequirements.forEach((req, reqi) => {
         selectCheckList[reqi].forEach((e) => {
             groupCheckList[req.group_id].push(e);
+
         });
     });
 
