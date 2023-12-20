@@ -20,7 +20,8 @@ const App: React.FC<AppProps> = () => {
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
       const text = CSVconvart(e.target?.result as string);
-      const fusoku = Check(text, selectedMajor);
+      // console.log(text);
+      const fusoku = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認", "履修中"]);
       console.log(`現在の選択主専攻:${selectedMajor}。`);
       setIsupload(true);
       const {Compulsory, Select} = fusoku;
