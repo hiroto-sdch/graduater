@@ -62,4 +62,5 @@ export const SelectTable = (selected: Selected) =>{
                 <Table columns={tableColumns} dataSource={tabledata1}/>
             </Panel>
         </Collapse>
-    )
+    );
+}
