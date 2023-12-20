@@ -79,19 +79,21 @@ function Recommend(gradeslist: Course[], major: string, data: any) {
         }
     });
 
-    let recommend: {[name: string]: string[]} = {};
+    let baserec: {[name: string]: string[]} = {};
     Object.keys(searchid).forEach((key) => {
-        recommend[key] = sublist.filter((subject) => {
+        baserec[key] = sublist.filter((subject) => {
             return matchRequire(subject[0], searchid[key]);
         }).map((e) => e[0]);
     });
 
 
     let got = gradeslist.map((e) => e.id);
-    Object.keys(recommend).forEach((key) => {
-        recommend[key].forEach((id) => {
-            if(got.includes(id)){
-                recommend[key].splice(recommend[key].findIndex((e) => e === id), 1)
+    let recommend: {[name: string]: string[]} = {};
+    Object.keys(baserec).forEach((key) => {
+        recommend[key] = [];
+        baserec[key].forEach((id) => {
+            if(!got.includes(id)){
+                recommend[key].push(id);
             }
         })
     })
