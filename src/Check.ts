@@ -23,6 +23,10 @@ function Check(gradeslist: Course[], major: string, target_grade: string[]) {
             break;
     }
 
+    gradeslist.forEach((e) => {
+        e.checked = false;
+    });
+
     let data: {[name:string] : any} = {};
     data["Compulsory"] = CheckCompulsory(gradeslist, requirement, target_grade);
     data["Select"] = CheckSelect(gradeslist, requirement, target_grade);
