@@ -1,10 +1,10 @@
 import { UploadOutlined } from '@ant-design/icons/lib/icons';
-import { Typography, Upload, Button } from 'antd';
+import { Typography, Upload, Button, Switch } from 'antd';
 import React, { useState } from 'react';
 import Check from './Check';
 import Dropdown from './Dropdown';
 import CSVconvart from './Csvconvert';
-import { CollapseTable } from './CollapseTable';
+import { CollapseTable, SelectTable } from './CollapseTable';
 
 const { Title } = Typography;
 
@@ -13,31 +13,38 @@ interface AppProps {}
 const App: React.FC<AppProps> = () => {
   const [isupload, setIsupload] = useState(false);
   const [selectedMajor, setSelectedMajor] = useState<string>("");
+  const [isCompON, setIsCompON] = useState(true);
   const [Message, setMessage] = useState<string[]>([]);
+  const [SelectMessage, setSelectMessage] = useState<string[]>([]);
+  const [MessageON, setMessageON] = useState<string[]>([]);
+  const [SelectMessageON, setSelectMessageON] = useState<string[]>([]);
 
   const handleFile = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
       const text = CSVconvart(e.target?.result as string);
-      console.log(text);
-      const fusoku = Check(text, selectedMajor);
+      const fusoku = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認", "履修中"]);
+      const fusokuON = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認"]);
       console.log(`現在の選択主専攻:${selectedMajor}。`);
-      console.log(`${file.name} が正常にアップロードされました！`);
       setIsupload(true);
-      // console.log(fusoku)
       const {Compulsory, Select} = fusoku;
-      console.log(Select);
-      setMessage(Compulsory)
-      // console.log(Compulsory);
+      setMessage(Compulsory);
+      setSelectMessage(Select);
+      setMessageON(fusokuON.Compulsory);
+      setSelectMessageON(fusokuON.Select);
     };
     reader.readAsText(file);
     return false;
   };
 
   const handleDropdownChange = (selectedValues: { college: string | null; department: string | null; major: string }) => {
-    console.log('Dropdown selected:', selectedValues);
     setSelectedMajor(selectedValues.major);
+    // console.log('Dropdown selected:', selectedValues);
   };
+
+  const handleIsCompON = (checked:boolean) =>{
+    setIsCompON(checked);
+  }
 
   return (
     <div className='App'>
@@ -53,7 +60,14 @@ const App: React.FC<AppProps> = () => {
                 Upload CSV file
               </Button>
             </Upload>
-            {isupload && <CollapseTable fusoku={Message}></CollapseTable>}
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+              <span>履修中の単位を取得済みとする</span>
+              <Switch style={{ marginLeft: '8px' }} checked={ isCompON } onChange={ handleIsCompON } />
+            </div>
+            {isupload && isCompON && <CollapseTable fusoku={Message}></CollapseTable>}
+            {isupload && isCompON && <SelectTable Select={SelectMessage}></SelectTable>}
+            {isupload && !isCompON && <CollapseTable fusoku={MessageON}></CollapseTable>}
+            {isupload && !isCompON && <SelectTable Select={SelectMessageON}></SelectTable>}
           </div>
         </div>
       </header>

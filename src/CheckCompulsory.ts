@@ -1,7 +1,7 @@
 import Course from './Course';
 import codeType from './data/courseCodeTypes';
 
-function CheckCompulsory(gradeslist: Course[], requirement: any) {
+function CheckCompulsory(gradeslist: Course[], requirement: any, target_grade: string[]) {
 
     let checklist: {[name: string]: boolean} = {};  // 科目名：履修したかどうか
     let compulsory: string[] = requirement["courses"]["compulsory"];    // 必修単位の科目名
@@ -23,7 +23,7 @@ function CheckCompulsory(gradeslist: Course[], requirement: any) {
                 });
                 if (syn.every((_hoge) => (
                     gradeslist.some((grades) => 
-                    grades["name"] === _hoge && !["D", "F"].includes(grades["grade"])
+                    grades["name"] === _hoge && target_grade.includes(grades["grade"])
                     )
                     )
                     )) {
@@ -41,7 +41,7 @@ function CheckCompulsory(gradeslist: Course[], requirement: any) {
        
             codes.forEach((code) => {
                 gradeslist.forEach((grades) => {
-                    if (grades.id.startsWith(code) && !["D", "F"].includes(grades.grade)){
+                    if (grades.id.startsWith(code) && target_grade.includes(grades.grade)){
                         count += Number(grades.unit);
                         grades.checked = true;
                     }
@@ -51,7 +51,7 @@ function CheckCompulsory(gradeslist: Course[], requirement: any) {
         }
         else {
             checklist[e]=gradeslist.some((grades) => {
-                return grades["name"] === e && !["D", "F"].includes(grades["grade"]);
+                return grades["name"] === e && target_grade.includes(grades["grade"]);
             });
         }
     });
