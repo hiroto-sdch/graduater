@@ -90,9 +90,10 @@ function CheckSelect(gradeslist: Course[], requirement: any, target_grade: strin
         });
     });
 
-    const tmp: {[name : string]: ({[name : string]: number})} = {};
+    const tmp: {[name : string]: {[name : string]: number}} = {};
     groups.forEach((e, i) => {
         const hoge = (e.min - groupCheckList[i].map((e) => e.unit).reduce((p, e) => p+e , 0));
+        tmp[e.name] = {};
         tmp[e.name]["全体"] = (hoge > 0 ? hoge : 0);
         selectRequirements.forEach((s, i) => {
             const fuga = (s.min - selectCheckList[i].map((s) => s.unit).reduce((p, s) => p+s , 0));
