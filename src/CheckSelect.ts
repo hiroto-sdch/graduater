@@ -17,7 +17,7 @@ interface Group{
     name : string;
 }
 
-function CheckSelect(gradeslist: Course[], requirement: any): {[name : string]: number} {
+function CheckSelect(gradeslist: Course[], requirement: any, target_grade: string[]): {[name : string]: number} {
     const matchRequire = (id : string, require : string[]) : boolean => {
         return require.some((e) => {
             if(e.startsWith("*")){ // code type 使用
@@ -57,7 +57,7 @@ function CheckSelect(gradeslist: Course[], requirement: any): {[name : string]: 
     let groupCheckList : (Course[])[] = [];
     groups.forEach((e) => {groupCheckList[e.id] = [];});
 
-    gradeslist.filter((e) => (!["D", "F"].includes(e.grade))).forEach((e) => {
+    gradeslist.filter((e) => (target_grade.includes(e.grade))).forEach((e) => {
         selectRequirements.forEach((req, reqi) => {
             if(!e.checked && ((!req.not && matchRequire(e.id, req.ids)) || (req.not && !matchRequire(e.id, req.ids)))){
                 if((selectCheckList[reqi].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < req.max) &&   // CheckList 内の単位数を合計し、上限と比較

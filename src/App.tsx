@@ -21,7 +21,7 @@ const App: React.FC<AppProps> = () => {
     reader.onload = (e: ProgressEvent<FileReader>) => {
       const text = CSVconvart(e.target?.result as string);
       // console.log(text);
-      const fusoku = Check(text, selectedMajor);
+      const fusoku = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認", "履修中"]);
       console.log(`現在の選択主専攻:${selectedMajor}。`);
       // console.log(`${file.name} が正常にアップロードされました！`);
       setIsupload(true);

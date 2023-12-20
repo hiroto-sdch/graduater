@@ -5,7 +5,7 @@ import Course from './Course';
 import CheckCompulsory from './CheckCompulsory';
 import CheckSelect from './CheckSelect';
 
-function Check(gradeslist: Course[], major: string) {
+function Check(gradeslist: Course[], major: string, target_grade: string[]) {
     // 卒業要件のJSONを格納
     let requirement: any;
     switch (major) {
@@ -24,8 +24,8 @@ function Check(gradeslist: Course[], major: string) {
     }
 
     let data: {[name:string] : any} = {};
-    data["Compulsory"] = CheckCompulsory(gradeslist, requirement);
-    data["Select"] = CheckSelect(gradeslist, requirement);
+    data["Compulsory"] = CheckCompulsory(gradeslist, requirement, target_grade);
+    data["Select"] = CheckSelect(gradeslist, requirement, target_grade);
     console.log(data);
 
     return data;
