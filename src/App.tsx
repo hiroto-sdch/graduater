@@ -23,15 +23,10 @@ const App: React.FC<AppProps> = () => {
       // console.log(text);
       const fusoku = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認", "履修中"]);
       console.log(`現在の選択主専攻:${selectedMajor}。`);
-      // console.log(`${file.name} が正常にアップロードされました！`);
       setIsupload(true);
-      // console.log(fusoku)
       const {Compulsory, Select} = fusoku;
-      // console.log(Select);
       setMessage(Compulsory);
       setSelectMessage(Select);
-      // console.log(Compulsory);
-      // console.log(typeof Select);
     };
     reader.readAsText(file);
     return false;
