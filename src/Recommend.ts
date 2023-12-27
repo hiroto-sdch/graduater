@@ -90,12 +90,14 @@ function Recommend(gradeslist: Course[], major: string, data: any) {
     let got = gradeslist.map((e) => e.id);
     let recommend: {[name: string]: string[]} = {};
     Object.keys(baserec).forEach((key) => {
-        recommend[key] = [];
-        baserec[key].forEach((id) => {
-            if(!got.includes(id)){
-                recommend[key].push(id);
-            }
-        })
+        if (key != "関連科目選択") {
+            recommend[key] = [];
+            baserec[key].forEach((id) => {
+                if(!got.includes(id)){
+                    recommend[key].push(id);
+                }
+            })
+        }
     })
     // console.log(recommend);
     return recommend;
