@@ -73,7 +73,7 @@ function CheckSelect(gradeslist: Course[], requirement: any, target_grade: strin
     selectRequirements.forEach((e, i) => {
         let over : number;
         while((over = (selectCheckList[i].map(e => e.unit).reduce((p, e) => p+e , 0) - e.max)) > 0){
-            const r = selectCheckList[i].findIndex((e) => e.unit <= over);
+            const r = ((o) => selectCheckList[i].findIndex((e) => e.unit <= o))(over);
             if(r === -1){
                 console.log("端数の処理ができませんでした。。。。。。");
                 return undefined;
