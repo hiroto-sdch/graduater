@@ -37,6 +37,7 @@ export const CollapseTable = (props: Props) =>{
 export const SelectTable = (selected: Selected) =>{
     const {Select} = selected;
     const bunrui = Object.keys(Select);
+    const shoubunrui = bunrui.map((e) => (Object.keys((Select as {[name : string]: ({[name : string]: number})})[e])));
     const numtani = Object.values(Select);
     const tableColumns = [
         {
@@ -50,16 +51,26 @@ export const SelectTable = (selected: Selected) =>{
             key: "num",
         }
     ];
-    const tabledata1 = bunrui.map((item, index) => ({
-        key: index.toString(),
-        className: item,
-        num: numtani[index]
-    }));
+
+    const table = bunrui.map((item, index) => {
+        const tabledata = shoubunrui[index].filter((e) => (e !== "全体")).map((e, i) => ({
+            key: i,
+            className: e,
+            num: numtani[index][e]
+        }));
+        return (
+        <Collapse>
+            <Panel header={item+"    不足"+numtani[index]["全体"]+"単位"} key={index}>
+                <Table columns={tableColumns} dataSource={tabledata} />
+            </Panel>
+        </Collapse>
+        );
+    });
 
     return(
         <Collapse>
             <Panel header="足りない選択科目数" key="2">
-                <Table columns={tableColumns} dataSource={tabledata1}/>
+                {table}
             </Panel>
         </Collapse>
     );
