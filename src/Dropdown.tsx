@@ -1,4 +1,4 @@
-import { Select } from 'antd';
+import { Select, Space } from 'antd';
 import React, { useState } from 'react';
 
 const { Option } = Select;
@@ -38,11 +38,12 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
   
     return (
       <div>
+        <Space wrap style={{justifyContent:"center", display:"flex"}}>
         <Select
           style={{ width: 300 }}
           placeholder="学群を選択してください。"
           onChange={handleCollegeChange}
-          value={selectedCollege} //Todo:後で消す
+          value={selectedCollege}
         >
           <Option value="人文・文化学群">人文・文化学群</Option>
           <Option value="社会・国際学群">社会・国際学群</Option>
@@ -56,7 +57,7 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
         </Select>
   
         {<Select
-            style={{ width: 300, marginLeft: 10 }}
+            style={{ width: 300 }}
             placeholder={selectedDepartment ? undefined : "学類を選択してください。"}
             onChange={handleDepartmentChange}
             disabled={!selectedCollege}
@@ -126,7 +127,7 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
           </Select>}
   
         {<Select
-            style={{ width: 300, marginLeft: 10 }}
+            style={{ width: 300 }}
             placeholder={selectedMajor ? undefined : "主専攻を選択してください。"}
             onChange={handleMajorChange}
             disabled={!selectedDepartment}
@@ -236,9 +237,9 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
             )}
             {selectedDepartment === '情報科学類' && (
               <>
-                <Option value="ソフトウェアサイエンス">ソフトウェアサイエンス</Option>
-                <Option value="情報システム">情報システム</Option>
-                <Option value="知能情報メディア">知能情報メディア</Option>
+                <Option value="coins_soft21">ソフトウェアサイエンス</Option>
+                <Option value="coins_sys21">情報システム</Option>
+                <Option value="coins_media21">知能情報メディア</Option>
               </>
             )}
             {selectedDepartment === '情報メディア創成学類' && (
@@ -283,6 +284,7 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
               </>
             )}
           </Select>}
+          </Space>
       </div>
     );
   };

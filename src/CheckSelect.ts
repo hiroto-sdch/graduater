@@ -17,7 +17,7 @@ interface Group{
     name : string;
 }
 
-function CheckSelect(gradeslist: Course[], requirement: any): {[name : string]: number} {
+function CheckSelect(gradeslist: Course[], requirement: any, target_grade: string[]): {[name : string]: number} {
     const matchRequire = (id : string, require : string[]) : boolean => {
         return require.some((e) => {
             if(e.startsWith("*")){ // code type 使用
@@ -57,39 +57,46 @@ function CheckSelect(gradeslist: Course[], requirement: any): {[name : string]: 
     let groupCheckList : (Course[])[] = [];
     groups.forEach((e) => {groupCheckList[e.id] = [];});
 
-    let checked : Course[] = [];
-
-    gradeslist.filter((e) => (!["D", "F"].includes(e.grade))).forEach((e) => {
+    gradeslist.filter((e) => (target_grade.includes(e.grade))).forEach((e) => {
         selectRequirements.forEach((req, reqi) => {
             if(!e.checked && ((!req.not && matchRequire(e.id, req.ids)) || (req.not && !matchRequire(e.id, req.ids)))){
-                if(selectCheckList[reqi].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < req.max &&   // CheckList 内の単位数を合計し、上限と比較
-                        groupCheckList[req.group_id].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < groups[req.group_id].max){
+                if((selectCheckList[reqi].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < req.max) &&   // CheckList 内の単位数を合計し、上限と比較
+                        (groupCheckList[req.group_id].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < groups[req.group_id].max)){
                     selectCheckList[reqi].push(e);
-                    groupCheckList[req.group_id].push(e);
                     e.checked = true;
                 }
             }
-             
-            // .forEach((req_id) => {
-            //     if(!e.checked && ((!req.not && e.id.startsWith(req_id)) || (req.not && !e.id.startsWith(req_id)))){
-            //         if(selectCheckList[reqi].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < req.max &&   // CheckList 内の単位数を合計し、上限と比較
-            //                 groupCheckList[req.group_id].map((e)=>e.unit).reduce((p,e) => (p+e), 0) < groups[req.group_id].max){
-            //             selectCheckList[reqi].push(e);
-            //             groupCheckList[req.group_id].push(e);
-            //             e.checked = true;
-            //         }
-            //     }
-            // });
+        });
+    });
+
+    // あふれの処理
+    selectRequirements.forEach((e, i) => {
+        let over : number;
+        while((over = (selectCheckList[i].map(e => e.unit).reduce((p, e) => p+e , 0) - e.max)) > 0){
+            const r = ((o) => selectCheckList[i].findIndex((e) => e.unit <= o))(over);
+            if(r === -1){
+                console.log("端数の処理ができませんでした。。。。。。");
+                return undefined;
+            }
+            (gradeslist.find((e) => e === selectCheckList[i][r]) as Course).checked = false;
+            selectCheckList[i].splice(r, 1);
+        };
+    });
+
+    selectRequirements.forEach((req, reqi) => {
+        selectCheckList[reqi].forEach((e) => {
+            groupCheckList[req.group_id].push(e);
+
         });
     });
 
     const tmp: {[name : string]: number} = {};
     groups.forEach((e, i) => {
-        const hoge = (e.min - groupCheckList[i].map((e) => e.unit).reduce((p, e) => p+e , 0)); 
+        const hoge = (e.min - groupCheckList[i].map((e) => e.unit).reduce((p, e) => p+e , 0));
         tmp[e.name] = (hoge > 0 ? hoge : 0);
     });
 
-    console.log(selectCheckList.map((e) => e.map((e)=>e.unit).reduce((p,e) => (p+e), 0)));
+    console.log(selectCheckList);
 
     return tmp;
 
