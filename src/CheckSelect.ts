@@ -96,7 +96,7 @@ function CheckSelect(gradeslist: Course[], requirement: any, target_grade: strin
         const hoge = (e.min - groupCheckList[i].map((e) => e.unit).reduce((p, e) => p+e , 0));
         tmp[e.name] = {};
         tmp[e.name]["全体"] = (hoge > 0 ? hoge : 0);
-        selectRequirements.forEach((s, i) => {
+        selectRequirements.filter((s) => (e.id === s.group_id)).forEach((s, i) => {
             const fuga = (s.min - selectCheckList[i].map((s) => s.unit).reduce((p, s) => p+s , 0));
             tmp[e.name][s.name] = (fuga > 0 ? fuga : 0);
         })
