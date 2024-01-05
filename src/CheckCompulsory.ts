@@ -29,7 +29,15 @@ function CheckCompulsory(gradeslist: Course[], requirement: any, target_grade: s
                     )) {
                     return checklist[e] = true;
                 }
-                else{
+                else if(syn.every((_hoge) => (
+                    gradeslist.some((grades) => 
+                    grades["name"] === _hoge && (target_grade.includes(grades["grade"]) || grades["grade"] === "履修中")
+                    )
+                    )
+                    )){
+                    checklist[e+"(履修中)"] = false;
+                    return true;
+                } else {
                     return checklist[e] = false;
                 }
             });
@@ -50,9 +58,14 @@ function CheckCompulsory(gradeslist: Course[], requirement: any, target_grade: s
             checklist[tmp[0]] = (count >= Number(tmp[1]));
         }
         else {
-            checklist[e]=gradeslist.some((grades) => {
-                return grades["name"] === e && target_grade.includes(grades["grade"]);
-            });
+            if(gradeslist.some((grades) => grades["name"] === e && target_grade.includes(grades["grade"]))){
+                checklist[e] = true;
+            } else if(gradeslist.some((grades) => grades["name"] === e && grades["grade"] === "履修中")){
+                checklist[e] = true;
+                checklist[e+"(履修中)"] = false;
+            } else {
+                checklist[e] = false;
+            }
         }
     });
 
