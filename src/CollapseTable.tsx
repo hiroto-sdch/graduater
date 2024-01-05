@@ -1,7 +1,5 @@
-import { Collapse, Table } from "antd";
+import { Table } from "antd";
 import React from "react";
-
-const { Panel } = Collapse;
 
 type Props ={
     fusoku: string[];
@@ -26,11 +24,7 @@ export const CollapseTable = (props: Props) =>{
       }));
 
     return(
-        <Collapse>
-            <Panel header="足りない必修科目" key="1">
-                <Table columns={tableColumns} dataSource={tableData}/>
-            </Panel>
-        </Collapse>
+        <Table columns={tableColumns} dataSource={tableData}/>
     )
 }
 
@@ -68,10 +62,6 @@ export const SelectTable = (selected: Selected) =>{
     });
 
     return(
-        <Collapse>
-            <Panel header="足りない選択科目数" key="2">
-                {table}
-            </Panel>
-        </Collapse>
+        <Table columns={tableColumns} dataSource={tabledata1}/>
     );
 }
