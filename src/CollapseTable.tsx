@@ -55,11 +55,9 @@ export const SelectTable = (selected: Selected) =>{
             num: numtani[index][e]
         }));
         return (
-        <Collapse>
             <Panel header={item+"    不足"+numtani[index]["全体"]+"単位"} key={index}>
                 <Table columns={tableColumns} dataSource={tabledata} />
             </Panel>
-        </Collapse>
         );
     });
 
