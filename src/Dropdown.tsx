@@ -224,8 +224,8 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
             )}
             {selectedDepartment === '工学システム学類' && (
               <>
-                <Option value="esys_intelligence21">知的・機能工学システム</Option>
-                <Option value="esys_energy21">エネルギー・メカニクス</Option>
+                <Option value="知的・機能工学システム">知的・機能工学システム</Option>
+                <Option value="エネルギー・メカニクス">エネルギー・メカニクス</Option>
               </>
             )}
             {selectedDepartment === '社会工学類' && (
@@ -237,9 +237,9 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
             )}
             {selectedDepartment === '情報科学類' && (
               <>
-                <Option value="coins_soft21">ソフトウェアサイエンス</Option>
-                <Option value="coins_sys21">情報システム</Option>
-                <Option value="coins_media21">知能情報メディア</Option>
+                <Option value="ソフトウェアサイエンス">ソフトウェアサイエンス</Option>
+                <Option value="情報システム">情報システム</Option>
+                <Option value="知能情報メディア">知能情報メディア</Option>
               </>
             )}
             {selectedDepartment === '情報メディア創成学類' && (
