@@ -8,7 +8,7 @@ function CheckUnitCapRelease(gradeslist: Course[]) {
     gradeslist.forEach((e) => {
         if (e.year == 2023) {
             totalUnits += e.unit;
-            if (e.grade == 'A' || e.grade == 'A+') {
+            if (e.grade == 'A' || e.grade == 'A+' || e.grade == 'P') {
                 aGradeUnits += e.unit;
             }
             if (e.grade == '履修中'){
