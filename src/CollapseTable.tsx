@@ -1,5 +1,7 @@
-import { Table } from "antd";
+import { Table, Collapse } from "antd";
 import React from "react";
+
+const { Panel } =  Collapse;
 
 type Props ={
     fusoku: string[];
@@ -46,7 +48,7 @@ export const SelectTable = (selected: Selected) =>{
         }
     ];
 
-    const table = bunrui.map((item, index) => {
+    const lltable = bunrui.map((item, index) => {
         const tabledata = shoubunrui[index].filter((e) => (e !== "全体")).map((e, i) => ({
             key: i,
             className: e,
@@ -62,6 +64,8 @@ export const SelectTable = (selected: Selected) =>{
     });
 
     return(
-        <Table columns={tableColumns} dataSource={tabledata1}/>
+        <Collapse>
+            {lltable}
+        </Collapse>
     );
 }
