@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons/lib/icons';
-import { Typography, Upload, Button, Switch } from 'antd';
+import { Typography, Upload, Button, Switch, Tabs } from 'antd';
 import React, { useState } from 'react';
 import Check from './Check';
 import Dropdown from './Dropdown';
@@ -25,11 +25,11 @@ const App: React.FC<AppProps> = () => {
       const text = CSVconvart(e.target?.result as string);
       const fusoku = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認", "履修中"]);
       const fusokuON = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認"]);
-      console.log(`現在の選択主専攻:${selectedMajor}。`);
+      console.log(`現在の選択主専攻:${selectedMajor}`);
+      localStorage.removeItem("currentTab");
       setIsupload(true);
-      const {Compulsory, Select} = fusoku;
-      setMessage(Compulsory);
-      setSelectMessage(Select);
+      setMessage(fusoku.Compulsory);
+      setSelectMessage(fusoku.Select);
       setMessageON(fusokuON.Compulsory);
       setSelectMessageON(fusokuON.Select);
     };
@@ -39,12 +39,41 @@ const App: React.FC<AppProps> = () => {
 
   const handleDropdownChange = (selectedValues: { college: string | null; department: string | null; major: string }) => {
     setSelectedMajor(selectedValues.major);
-    // console.log('Dropdown selected:', selectedValues);
   };
 
   const handleIsCompON = (checked:boolean) =>{
     setIsCompON(checked);
   }
+
+  const items = [
+    {
+      key:'1',
+      label:"必修科目",
+      children:<CollapseTable fusoku={Message}></CollapseTable>,
+    },
+    {
+      key:'2',
+      label:"選択科目",
+      children:<SelectTable Select={SelectMessage}></SelectTable>,
+    },
+  ]
+
+  const itemsON = [
+    {
+      key:'1',
+      label:"必修科目",
+      children:<CollapseTable fusoku={MessageON}></CollapseTable>,
+    },
+    {
+      key:'2',
+      label:"選択科目",
+      children:<SelectTable Select={SelectMessageON}></SelectTable>,
+    },
+  ]
+
+  const ONtabchange = (key:string) => { 
+    localStorage.setItem("currentTab", key);
+  } 
 
   return (
     <div className='App'>
@@ -64,10 +93,8 @@ const App: React.FC<AppProps> = () => {
               <span>履修中の単位を取得済みとする</span>
               <Switch style={{ marginLeft: '8px' }} checked={ isCompON } onChange={ handleIsCompON } />
             </div>
-            {isupload && isCompON && <CollapseTable fusoku={Message}></CollapseTable>}
-            {isupload && isCompON && <SelectTable Select={SelectMessage}></SelectTable>}
-            {isupload && !isCompON && <CollapseTable fusoku={MessageON}></CollapseTable>}
-            {isupload && !isCompON && <SelectTable Select={SelectMessageON}></SelectTable>}
+            {isupload && isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
+            {isupload && !isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={itemsON} onChange={ONtabchange}></Tabs>}
           </div>
         </div>
       </header>
@@ -76,4 +103,3 @@ const App: React.FC<AppProps> = () => {
 };
 
 export default App;
-

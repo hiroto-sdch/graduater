@@ -224,8 +224,8 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
             )}
             {selectedDepartment === '工学システム学類' && (
               <>
-                <Option value="知的・機能工学システム">知的・機能工学システム</Option>
-                <Option value="エネルギー・メカニクス">エネルギー・メカニクス</Option>
+                <Option value="esys_intelligence21">知的・機能工学システム</Option>
+                <Option value="esys_energy21">エネルギー・メカニクス</Option>
               </>
             )}
             {selectedDepartment === '社会工学類' && (
