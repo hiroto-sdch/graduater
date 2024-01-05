@@ -27,6 +27,11 @@ const App: React.FC<AppProps> = () => {
       const fusokuON = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認"]);
       console.log(`現在の選択主専攻:${selectedMajor}`);
       localStorage.removeItem("currentTab");
+      (fusokuON["Compulsory"] as string[]).forEach((e) => {
+        if(!fusoku["Compulsory"].includes(e)){
+          (fusoku["Compulsory"] as string[]).push(e + "(履修中)");
+        }
+      })
       setIsupload(true);
       setMessage(fusoku.Compulsory);
       setSelectMessage(fusoku.Select);
