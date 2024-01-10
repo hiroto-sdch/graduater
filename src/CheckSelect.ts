@@ -104,7 +104,7 @@ function CheckSelect(gradeslist: Course[], requirement: any, target_grade: strin
         })
     });
 
-    console.log(selectCheckList);
+    // console.log(selectCheckList);
 
     return tmp;
 
