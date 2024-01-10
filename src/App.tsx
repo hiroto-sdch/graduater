@@ -14,11 +14,8 @@ interface AppProps {}
 const App: React.FC<AppProps> = () => {
   const [isupload, setIsupload] = useState(false);
   const [selectedMajor, setSelectedMajor] = useState<string>("");
-  const [isCompON, setIsCompON] = useState(true);
   const [Message, setMessage] = useState<string[]>([]);
   const [SelectMessage, setSelectMessage] = useState<{[name: string]:any}>([]);
-  const [MessageON, setMessageON] = useState<string[]>([]);
-  const [SelectMessageON, setSelectMessageON] = useState<string[]>([]);
   const [Senmonkiso, setSenmonkiso] = useState<string[]>([]);
   const [Senmon, setSenmon] = useState<string[]>([]);
 
@@ -48,8 +45,6 @@ const App: React.FC<AppProps> = () => {
       setIsupload(true);
       setMessage(fusoku.Compulsory);
       setSelectMessage(fusokuRishu);
-      setMessageON(fusokuON.Compulsory);
-      setSelectMessageON(fusokuON.Select);
     };
     reader.readAsText(file);
     return false;
@@ -58,10 +53,6 @@ const App: React.FC<AppProps> = () => {
   const handleDropdownChange = (selectedValues: { college: string | null; department: string | null; major: string }) => {
     setSelectedMajor(selectedValues.major);
   };
-
-  const handleIsCompON = (checked:boolean) =>{
-    setIsCompON(checked);
-  }
 
   const items = [
     {
@@ -73,19 +64,6 @@ const App: React.FC<AppProps> = () => {
       key:'2',
       label:"選択科目",
       children:<SelectTable Select={SelectMessage}></SelectTable>,
-    },
-  ]
-
-  const itemsON = [
-    {
-      key:'1',
-      label:"必修科目",
-      children:<CollapseTable fusoku={MessageON}></CollapseTable>,
-    },
-    {
-      key:'2',
-      label:"選択科目",
-      children:<SelectTable Select={SelectMessageON}></SelectTable>,
     },
   ]
 
@@ -114,12 +92,7 @@ const App: React.FC<AppProps> = () => {
                 Upload CSV file
               </Button>
             </Upload>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-              <span>履修中の単位を取得済みとする</span>
-              <Switch style={{ marginLeft: '8px' }} checked={ isCompON } onChange={ handleIsCompON } />
-            </div>
-            {isupload && isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
-            {isupload && !isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={itemsON} onChange={ONtabchange}></Tabs>}
+            {isupload && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
           </div>
           <div>
             {isupload && <h4>未履修専門基礎科目(一部抜粋)</h4>}
