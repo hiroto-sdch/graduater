@@ -42,9 +42,14 @@ export const SelectTable = (selected: Selected) =>{
             key: "className",
         },
         {
-            title: "単位数",
-            dataIndex: "num",
-            key: "num",
+            title: "不足",
+            dataIndex: "fusoku",
+            key: "fusoku",
+        },
+        {
+            title: "履修中",
+            dataIndex: "rishu",
+            key: "rishu",
         }
     ];
 
@@ -52,12 +57,15 @@ export const SelectTable = (selected: Selected) =>{
         const tabledata = shoubunrui[index].filter((e) => (e !== "全体")).map((e, i) => ({
             key: i,
             className: e,
-            num: numtani[index][e]
+            fusoku: numtani[index][e].fusoku,
+            rishu: numtani[index][e].rishu
         }));
         return (
-            <Panel header={item+"    不足"+numtani[index]["全体"]+"単位"} key={index}>
+        <Collapse>
+            <Panel header={item+"    "+numtani[index]["全体"].fusoku+"単位不足    "+numtani[index]["全体"].rishu+"単位履修中"} key={index}>
                 <Table columns={tableColumns} dataSource={tabledata} />
             </Panel>
+        </Collapse>
         );
     });
 

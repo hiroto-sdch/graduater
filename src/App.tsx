@@ -16,7 +16,7 @@ const App: React.FC<AppProps> = () => {
   const [selectedMajor, setSelectedMajor] = useState<string>("");
   const [isCompON, setIsCompON] = useState(true);
   const [Message, setMessage] = useState<string[]>([]);
-  const [SelectMessage, setSelectMessage] = useState<string[]>([]);
+  const [SelectMessage, setSelectMessage] = useState<{[name: string]:any}>([]);
   const [MessageON, setMessageON] = useState<string[]>([]);
   const [SelectMessageON, setSelectMessageON] = useState<string[]>([]);
   const [Senmonkiso, setSenmonkiso] = useState<string[]>([]);
@@ -32,9 +32,22 @@ const App: React.FC<AppProps> = () => {
       setSenmonkiso(recommended["専門基礎科目選択"]);
       setSenmon(recommended["専門科目選択"]);
       localStorage.removeItem("currentTab");
+      (fusokuON["Compulsory"] as string[]).forEach((e) => {
+        if(!fusoku["Compulsory"].includes(e)){
+          (fusoku["Compulsory"] as string[]).push(e + "(履修中)");
+        }
+      });
+      const fusokuSelect = (fusokuON["Select"] as {[name : string]: {[name : string]: number}});
+      let fusokuRishu : {[name : string]: {[name : string]: {[name : string]: number}}} = {};
+      Object.keys(fusokuSelect).forEach((k) => {
+        fusokuRishu[k] = {};
+        Object.keys(fusokuSelect[k]).forEach((s) => {
+          fusokuRishu[k][s] = {fusoku: fusokuSelect[k][s], rishu:fusokuSelect[k][s]- fusoku["Select"][k][s]};
+        });
+      });
       setIsupload(true);
       setMessage(fusoku.Compulsory);
-      setSelectMessage(fusoku.Select);
+      setSelectMessage(fusokuRishu);
       setMessageON(fusokuON.Compulsory);
       setSelectMessageON(fusokuON.Select);
     };
