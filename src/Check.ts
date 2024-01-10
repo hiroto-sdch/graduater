@@ -1,6 +1,7 @@
 import Course from './Course';
 import CheckCompulsory from './CheckCompulsory';
 import CheckSelect from './CheckSelect';
+import CheckUnitCapRelease from './CheckUnitCapRelease';
 import Requirement from './Requirement';
 
 function Check(gradeslist: Course[], major: string, target_grade: string[]) {
@@ -14,7 +15,8 @@ function Check(gradeslist: Course[], major: string, target_grade: string[]) {
     let data: {[name:string] : any} = {};
     data["Compulsory"] = CheckCompulsory(gradeslist, requirement, target_grade);
     data["Select"] = CheckSelect(gradeslist, requirement, target_grade);
-    // console.log(data);
+    data["UnitCapRelease"] = CheckUnitCapRelease(gradeslist);
+    console.log(data);
 
     return data;
 }
