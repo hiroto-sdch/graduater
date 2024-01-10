@@ -18,6 +18,9 @@ const App: React.FC<AppProps> = () => {
   const [SelectMessage, setSelectMessage] = useState<string[]>([]);
   const [MessageON, setMessageON] = useState<string[]>([]);
   const [SelectMessageON, setSelectMessageON] = useState<string[]>([]);
+  
+  const [RecommendedExam, setRecommendedExam] = useState(true);
+  const [UnitCapRelease, setUnitCapRelease] = useState(0);
 
   const handleFile = (file: File) => {
     const reader = new FileReader();
@@ -32,10 +35,17 @@ const App: React.FC<AppProps> = () => {
       setSelectMessage(fusoku.Select);
       setMessageON(fusokuON.Compulsory);
       setSelectMessageON(fusokuON.Select);
+      setRecommendedExam(fusoku.RecommendedExam);
+      setUnitCapRelease(fusoku.UnitCapRelease);
+      //console.log(fusoku.RecommendedExam);
+      //console.log(fusoku.UnitCapRelease);
     };
     reader.readAsText(file);
     return false;
   };
+
+  console.log(RecommendedExam);
+  console.log(UnitCapRelease);
 
   const handleDropdownChange = (selectedValues: { college: string | null; department: string | null; major: string }) => {
     setSelectedMajor(selectedValues.major);
@@ -75,6 +85,15 @@ const App: React.FC<AppProps> = () => {
     localStorage.setItem("currentTab", key);
   } 
 
+  let RecommendedExamText = '大学院推薦入試を受けることができません'
+  if (RecommendedExam === true) {
+    RecommendedExamText = '大学院推薦入試を受けることができます'
+  }
+  let UnitCapReleaseText = "単位上限の解放に必要な単位数：" + UnitCapRelease;
+  if (UnitCapRelease === 0) {
+    UnitCapReleaseText = '単位上限を55に解放することができます'
+  }
+
   return (
     <div className='App'>
       <header className='App-header'>
@@ -95,6 +114,12 @@ const App: React.FC<AppProps> = () => {
             </div>
             {isupload && isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
             {isupload && !isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={itemsON} onChange={ONtabchange}></Tabs>}
+          </div>
+          <div style={{ textAlign: 'center'}}>
+            <span>{isupload && RecommendedExamText}</span>
+          </div>
+          <div style={{ textAlign: 'center'}}>
+            <span>{isupload && UnitCapReleaseText}</span>
           </div>
         </div>
       </header>
