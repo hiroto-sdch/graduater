@@ -1,4 +1,4 @@
-export function Check(){
+export function Check(): boolean{
     return true;
 }
 

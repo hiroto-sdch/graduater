@@ -5,6 +5,7 @@ import Check from './Check';
 import Dropdown from './Dropdown';
 import CSVconvart from './Csvconvert';
 import { CollapseTable, SelectTable } from './CollapseTable';
+import Recommend from './Recommend';
 
 
 const { Title } = Typography;
@@ -16,12 +17,14 @@ const App: React.FC<AppProps> = () => {
   const [selectedMajor, setSelectedMajor] = useState<string>("");
   const [isCompON, setIsCompON] = useState(true);
   const [Message, setMessage] = useState<string[]>([]);
-  const [SelectMessage, setSelectMessage] = useState<string[]>([]);
+  const [SelectMessage, setSelectMessage] = useState<{[name: string]:any}>([]);
   const [MessageON, setMessageON] = useState<string[]>([]);
   const [SelectMessageON, setSelectMessageON] = useState<string[]>([]);
   
   const [RecommendedExam, setRecommendedExam] = useState(0);
   const [UnitCapRelease, setUnitCapRelease] = useState(0);
+  const [Senmonkiso, setSenmonkiso] = useState<string[]>([]);
+  const [Senmon, setSenmon] = useState<string[]>([]);
 
   const handleFile = (file: File) => {
     const reader = new FileReader();
@@ -29,11 +32,26 @@ const App: React.FC<AppProps> = () => {
       const text = CSVconvart(e.target?.result as string);
       const fusoku = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認", "履修中"]);
       const fusokuON = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認"]);
-      console.log(`現在の選択主専攻:${selectedMajor}`);
+      const recommended = Recommend(text, selectedMajor, fusoku);
+      setSenmonkiso(recommended["専門基礎科目選択"]);
+      setSenmon(recommended["専門科目選択"]);
       localStorage.removeItem("currentTab");
+      (fusokuON["Compulsory"] as string[]).forEach((e) => {
+        if(!fusoku["Compulsory"].includes(e)){
+          (fusoku["Compulsory"] as string[]).push(e + "(履修中)");
+        }
+      });
+      const fusokuSelect = (fusokuON["Select"] as {[name : string]: {[name : string]: number}});
+      let fusokuRishu : {[name : string]: {[name : string]: {[name : string]: number}}} = {};
+      Object.keys(fusokuSelect).forEach((k) => {
+        fusokuRishu[k] = {};
+        Object.keys(fusokuSelect[k]).forEach((s) => {
+          fusokuRishu[k][s] = {fusoku: fusokuSelect[k][s], rishu:fusokuSelect[k][s]- fusoku["Select"][k][s]};
+        });
+      });
       setIsupload(true);
       setMessage(fusoku.Compulsory);
-      setSelectMessage(fusoku.Select);
+      setSelectMessage(fusokuRishu);
       setMessageON(fusokuON.Compulsory);
       setSelectMessageON(fusokuON.Select);
       setRecommendedExam(fusoku.RecommendedExam);
@@ -85,9 +103,7 @@ const App: React.FC<AppProps> = () => {
   const ONtabchange = (key:string) => { 
     localStorage.setItem("currentTab", key);
   } 
-
-
-
+  
   let RecommendedExamText = '大学院推薦入試を受けることができます'
   if (RecommendedExam !== 0) {
     RecommendedExamText = "大学院推薦入試に必要なA以上の単位数：" + RecommendedExam;
@@ -100,6 +116,13 @@ const App: React.FC<AppProps> = () => {
   const content = (
     <div>卒業までに履修する単位内で大学院推薦入試を受験することに最低限必要なA以上の単位数</div>
   )
+  
+  const getRandomElements = (arr:string[], num:number) => {
+    const shuffled = arr.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, num);
+  }
+   const randomSenmonkiso = getRandomElements(Senmonkiso, 5);
+   const randomSenmon = getRandomElements(Senmon, 5);
 
   return (
     <div className='App'>
@@ -128,6 +151,26 @@ const App: React.FC<AppProps> = () => {
           </div>
           <div style={{ textAlign: 'center'}}>
             <span>{isupload && UnitCapReleaseText}</span>
+          </div>
+          <div>
+            {isupload && <h4>未履修専門基礎科目(一部抜粋)</h4>}
+            {isupload && randomSenmonkiso.map((item, index)=>(
+              <li key={index}>
+              <a href={`https://kdb.tsukuba.ac.jp/syllabi/2023/${item}/jpn`} target='blank'>
+                {item}
+              </a>
+            </li>
+            ))}
+          </div>
+          <div>
+            {isupload && <h4>未履修専門科目(一部抜粋)</h4>}
+            {isupload && randomSenmon.map((item, index)=>(
+              <li key={index}>
+                <a href={`https://kdb.tsukuba.ac.jp/syllabi/2023/${item}/jpn`} target='blank'>
+                  {item}
+                </a>
+              </li>
+            ))}
           </div>
         </div>
       </header>
