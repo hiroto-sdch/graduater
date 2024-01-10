@@ -5,15 +5,18 @@ function CheckRecommendedExam(gradelist: Course[]){
     let aGradeUnits = 0;
 
     gradelist.forEach((e) => {
-        if (e.grade != 'P') {
+        if (e.grade !== 'P') {
             totalUnits += e.unit;
-            if (e.grade == 'A' || e.grade == 'A+') {
+            if (e.grade === 'A' || e.grade === 'A+') {
                 aGradeUnits += e.unit;
             }
         } 
     })
 
-    return aGradeUnits/totalUnits >= 0.7;
+    if (125*0.7-aGradeUnits <= 0) {
+        return 0;
+    }
+    return 125*0.7-aGradeUnits;
 }
 
 export default CheckRecommendedExam;

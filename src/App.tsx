@@ -1,10 +1,11 @@
 import { UploadOutlined } from '@ant-design/icons/lib/icons';
-import { Typography, Upload, Button, Switch, Tabs } from 'antd';
+import { Typography, Upload, Button, Switch, Tabs, Divider, Popover } from 'antd';
 import React, { useState } from 'react';
 import Check from './Check';
 import Dropdown from './Dropdown';
 import CSVconvart from './Csvconvert';
 import { CollapseTable, SelectTable } from './CollapseTable';
+
 
 const { Title } = Typography;
 
@@ -19,7 +20,7 @@ const App: React.FC<AppProps> = () => {
   const [MessageON, setMessageON] = useState<string[]>([]);
   const [SelectMessageON, setSelectMessageON] = useState<string[]>([]);
   
-  const [RecommendedExam, setRecommendedExam] = useState(true);
+  const [RecommendedExam, setRecommendedExam] = useState(0);
   const [UnitCapRelease, setUnitCapRelease] = useState(0);
 
   const handleFile = (file: File) => {
@@ -85,14 +86,20 @@ const App: React.FC<AppProps> = () => {
     localStorage.setItem("currentTab", key);
   } 
 
-  let RecommendedExamText = '大学院推薦入試を受けることができません'
-  if (RecommendedExam === true) {
-    RecommendedExamText = '大学院推薦入試を受けることができます'
+
+
+  let RecommendedExamText = '大学院推薦入試を受けることができます'
+  if (RecommendedExam !== 0) {
+    RecommendedExamText = "大学院推薦入試に必要なA以上の単位数：" + RecommendedExam;
   }
-  let UnitCapReleaseText = "単位上限の解放に必要な単位数：" + UnitCapRelease;
+  let UnitCapReleaseText = "今学期履修中の単位内で単位上限の解放に必要なA以上の単位数：" + UnitCapRelease;
   if (UnitCapRelease === 0) {
     UnitCapReleaseText = '単位上限を55に解放することができます'
   }
+
+  const content = (
+    <div>卒業までに履修する単位内で大学院推薦入試を受験することに最低限必要なA以上の単位数</div>
+  )
 
   return (
     <div className='App'>
@@ -116,7 +123,8 @@ const App: React.FC<AppProps> = () => {
             {isupload && !isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={itemsON} onChange={ONtabchange}></Tabs>}
           </div>
           <div style={{ textAlign: 'center'}}>
-            <span>{isupload && RecommendedExamText}</span>
+            {RecommendedExam !== 0 && <Popover placement='bottom' content={content}><span>{isupload && RecommendedExamText}</span></Popover>}
+            {RecommendedExam === 0 && <span>{isupload && RecommendedExamText}</span>}
           </div>
           <div style={{ textAlign: 'center'}}>
             <span>{isupload && UnitCapReleaseText}</span>
