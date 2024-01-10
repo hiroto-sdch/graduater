@@ -1,11 +1,12 @@
 import { UploadOutlined } from '@ant-design/icons/lib/icons';
-import { Typography, Upload, Button, Switch, Tabs } from 'antd';
+import { Typography, Upload, Button, Switch, Tabs, Divider, Popover } from 'antd';
 import React, { useState } from 'react';
 import Check from './Check';
 import Dropdown from './Dropdown';
 import CSVconvart from './Csvconvert';
 import { CollapseTable, SelectTable } from './CollapseTable';
 import Recommend from './Recommend';
+
 
 const { Title } = Typography;
 
@@ -16,6 +17,8 @@ const App: React.FC<AppProps> = () => {
   const [selectedMajor, setSelectedMajor] = useState<string>("");
   const [Message, setMessage] = useState<string[]>([]);
   const [SelectMessage, setSelectMessage] = useState<{[name: string]:any}>([]);
+  const [RecommendedExam, setRecommendedExam] = useState(0);
+  const [UnitCapRelease, setUnitCapRelease] = useState(0);
   const [Senmonkiso, setSenmonkiso] = useState<string[]>([]);
   const [Senmon, setSenmon] = useState<string[]>([]);
 
@@ -45,10 +48,17 @@ const App: React.FC<AppProps> = () => {
       setIsupload(true);
       setMessage(fusoku.Compulsory);
       setSelectMessage(fusokuRishu);
+      setRecommendedExam(fusoku.RecommendedExam);
+      setUnitCapRelease(fusoku.UnitCapRelease);
+      //console.log(fusoku.RecommendedExam);
+      //console.log(fusoku.UnitCapRelease);
     };
     reader.readAsText(file);
     return false;
   };
+
+  console.log(RecommendedExam);
+  console.log(UnitCapRelease);
 
   const handleDropdownChange = (selectedValues: { college: string | null; department: string | null; major: string }) => {
     setSelectedMajor(selectedValues.major);
@@ -70,7 +80,20 @@ const App: React.FC<AppProps> = () => {
   const ONtabchange = (key:string) => { 
     localStorage.setItem("currentTab", key);
   } 
+  
+  let RecommendedExamText = '大学院推薦入試を受けることができます'
+  if (RecommendedExam !== 0) {
+    RecommendedExamText = "大学院推薦入試に必要なA以上の単位数：" + RecommendedExam;
+  }
+  let UnitCapReleaseText = "今学期履修中の単位内で単位上限の解放に必要なA以上の単位数：" + UnitCapRelease;
+  if (UnitCapRelease === 0) {
+    UnitCapReleaseText = '単位上限を55に解放することができます'
+  }
 
+  const content = (
+    <div>卒業までに履修する単位内で大学院推薦入試を受験することに最低限必要なA以上の単位数</div>
+  )
+  
   const getRandomElements = (arr:string[], num:number) => {
     const shuffled = arr.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, num);
@@ -93,6 +116,13 @@ const App: React.FC<AppProps> = () => {
               </Button>
             </Upload>
             {isupload && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
+          </div>
+          <div style={{ textAlign: 'center'}}>
+            {RecommendedExam !== 0 && <Popover placement='bottom' content={content}><span>{isupload && RecommendedExamText}</span></Popover>}
+            {RecommendedExam === 0 && <span>{isupload && RecommendedExamText}</span>}
+          </div>
+          <div style={{ textAlign: 'center'}}>
+            <span>{isupload && UnitCapReleaseText}</span>
           </div>
           <div>
             {isupload && <h4>未履修専門基礎科目(一部抜粋)</h4>}
