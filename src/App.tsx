@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons/lib/icons';
-import { Typography, Upload, Button, Switch, Tabs, Divider, Popover } from 'antd';
+import { Typography, Upload, Button, Tabs, Popover } from 'antd';
 import React, { useState } from 'react';
 import Check from './Check';
 import Dropdown from './Dropdown';
