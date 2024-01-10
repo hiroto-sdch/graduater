@@ -5,6 +5,7 @@ import Check from './Check';
 import Dropdown from './Dropdown';
 import CSVconvart from './Csvconvert';
 import { CollapseTable, SelectTable } from './CollapseTable';
+import Recommend from './Recommend';
 
 const { Title } = Typography;
 
@@ -18,6 +19,8 @@ const App: React.FC<AppProps> = () => {
   const [SelectMessage, setSelectMessage] = useState<{[name: string]:any}>([]);
   const [MessageON, setMessageON] = useState<string[]>([]);
   const [SelectMessageON, setSelectMessageON] = useState<string[]>([]);
+  const [Senmonkiso, setSenmonkiso] = useState<string[]>([]);
+  const [Senmon, setSenmon] = useState<string[]>([]);
 
   const handleFile = (file: File) => {
     const reader = new FileReader();
@@ -25,7 +28,9 @@ const App: React.FC<AppProps> = () => {
       const text = CSVconvart(e.target?.result as string);
       const fusoku = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認", "履修中"]);
       const fusokuON = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認"]);
-      console.log(`現在の選択主専攻:${selectedMajor}`);
+      const recommended = Recommend(text, selectedMajor, fusoku);
+      setSenmonkiso(recommended["専門基礎科目選択"]);
+      setSenmon(recommended["専門科目選択"]);
       localStorage.removeItem("currentTab");
       (fusokuON["Compulsory"] as string[]).forEach((e) => {
         if(!fusoku["Compulsory"].includes(e)){
@@ -88,6 +93,13 @@ const App: React.FC<AppProps> = () => {
     localStorage.setItem("currentTab", key);
   } 
 
+  const getRandomElements = (arr:string[], num:number) => {
+    const shuffled = arr.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, num);
+  }
+   const randomSenmonkiso = getRandomElements(Senmonkiso, 5);
+   const randomSenmon = getRandomElements(Senmon, 5);
+
   return (
     <div className='App'>
       <header className='App-header'>
@@ -109,6 +121,26 @@ const App: React.FC<AppProps> = () => {
             {isupload && isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
             {isupload && !isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={itemsON} onChange={ONtabchange}></Tabs>}
           </div>
+          <div>
+            {isupload && <h4>未履修専門基礎科目(一部抜粋)</h4>}
+            {isupload && randomSenmonkiso.map((item, index)=>(
+              <li key={index}>
+              <a href={`https://kdb.tsukuba.ac.jp/syllabi/2023/${item}/jpn`} target='blank'>
+                {item}
+              </a>
+            </li>
+            ))}
+          </div>
+          <div>
+            {isupload && <h4>未履修専門科目(一部抜粋)</h4>}
+            {isupload && randomSenmon.map((item, index)=>(
+              <li key={index}>
+                <a href={`https://kdb.tsukuba.ac.jp/syllabi/2023/${item}/jpn`} target='blank'>
+                  {item}
+                </a>
+              </li>
+            ))}
+          </div>
         </div>
       </header>
     </div>
@@ -116,4 +148,3 @@ const App: React.FC<AppProps> = () => {
 };
 
 export default App;
-
