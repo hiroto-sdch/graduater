@@ -13,10 +13,8 @@ function CheckRecommendedExam(gradelist: Course[]){
         } 
     })
 
-    if (125*0.7-aGradeUnits <= 0) {
-        return 0;
-    }
-    return 125*0.7-aGradeUnits;
+    let ratio = Math.round(aGradeUnits/totalUnits*1000)/10
+    return ratio;
 }
 
 export default CheckRecommendedExam;

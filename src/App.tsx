@@ -15,8 +15,12 @@ interface AppProps {}
 const App: React.FC<AppProps> = () => {
   const [isupload, setIsupload] = useState(false);
   const [selectedMajor, setSelectedMajor] = useState<string>("");
+  const [isCompON, setIsCompON] = useState(true);
   const [Message, setMessage] = useState<string[]>([]);
   const [SelectMessage, setSelectMessage] = useState<{[name: string]:any}>([]);
+  const [MessageON, setMessageON] = useState<string[]>([]);
+  const [SelectMessageON, setSelectMessageON] = useState<string[]>([]);
+  
   const [RecommendedExam, setRecommendedExam] = useState(0);
   const [UnitCapRelease, setUnitCapRelease] = useState(0);
   const [Senmonkiso, setSenmonkiso] = useState<string[]>([]);
@@ -48,6 +52,8 @@ const App: React.FC<AppProps> = () => {
       setIsupload(true);
       setMessage(fusoku.Compulsory);
       setSelectMessage(fusokuRishu);
+      setMessageON(fusokuON.Compulsory);
+      setSelectMessageON(fusokuON.Select);
       setRecommendedExam(fusoku.RecommendedExam);
       setUnitCapRelease(fusoku.UnitCapRelease);
       //console.log(fusoku.RecommendedExam);
@@ -64,6 +70,10 @@ const App: React.FC<AppProps> = () => {
     setSelectedMajor(selectedValues.major);
   };
 
+  const handleIsCompON = (checked:boolean) =>{
+    setIsCompON(checked);
+  }
+
   const items = [
     {
       key:'1',
@@ -77,21 +87,31 @@ const App: React.FC<AppProps> = () => {
     },
   ]
 
+  const itemsON = [
+    {
+      key:'1',
+      label:"必修科目",
+      children:<CollapseTable fusoku={MessageON}></CollapseTable>,
+    },
+    {
+      key:'2',
+      label:"選択科目",
+      children:<SelectTable Select={SelectMessageON}></SelectTable>,
+    },
+  ]
+
   const ONtabchange = (key:string) => { 
     localStorage.setItem("currentTab", key);
   } 
   
-  let RecommendedExamText = '大学院推薦入試を受けることができます'
-  if (RecommendedExam !== 0) {
-    RecommendedExamText = "大学院推薦入試に必要なA以上の単位数：" + RecommendedExam;
-  }
+  const RecommendedExamText = '現在のA,A+の単位数の割合：' + RecommendedExam + '%';
   let UnitCapReleaseText = "今学期履修中の単位内で単位上限の解放に必要なA以上の単位数：" + UnitCapRelease;
   if (UnitCapRelease === 0) {
     UnitCapReleaseText = '単位上限を55に解放することができます'
   }
 
   const content = (
-    <div>卒業までに履修する単位内で大学院推薦入試を受験することに最低限必要なA以上の単位数</div>
+    <div>大学院推薦入試にはA,A+の評価を取得した単位数が、総取得単位数の概ね70%以上が必要です</div>
   )
   
   const getRandomElements = (arr:string[], num:number) => {
@@ -115,7 +135,12 @@ const App: React.FC<AppProps> = () => {
                 Upload CSV file
               </Button>
             </Upload>
-            {isupload && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+              <span>履修中の単位を取得済みとする</span>
+              <Switch style={{ marginLeft: '8px' }} checked={ isCompON } onChange={ handleIsCompON } />
+            </div>
+            {isupload && isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
+            {isupload && !isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={itemsON} onChange={ONtabchange}></Tabs>}
           </div>
           <div style={{ textAlign: 'center'}}>
             {RecommendedExam !== 0 && <Popover placement='bottom' content={content}><span>{isupload && RecommendedExamText}</span></Popover>}
