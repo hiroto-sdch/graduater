@@ -5,7 +5,8 @@ import CheckUnitCapRelease from './CheckUnitCapRelease';
 import CheckRecommendedExam from './CheckRecommendedExam';
 import Requirement from './Requirement';
 
-function Check(gradeslist: Course[], major: string, target_grade: string[]) {
+// count_mode : 不足単位数を数える場合、true.  取った単位数を数える場合、false
+function Check(gradeslist: Course[], major: string, target_grade: string[], count_mode: boolean) {
     // 卒業要件のJSONを格納
     let requirement = Requirement(major);
 
@@ -14,8 +15,8 @@ function Check(gradeslist: Course[], major: string, target_grade: string[]) {
     });
   
     let data: {[name:string] : any} = {};
-    data["Compulsory"] = CheckCompulsory(gradeslist, requirement, target_grade);
-    data["Select"] = CheckSelect(gradeslist, requirement, target_grade);
+    data["Compulsory"] = CheckCompulsory(gradeslist, requirement, target_grade, count_mode);
+    data["Select"] = CheckSelect(gradeslist, requirement, target_grade, count_mode);
     data["UnitCapRelease"] = CheckUnitCapRelease(gradeslist); //単位上限を解放をするために必要なA以上の単位数を返却
     data["RecommendedExam"] = CheckRecommendedExam(gradeslist); //院試を推薦で受けるために必要なA以上の単位数を返却
     console.log(data);

@@ -26,8 +26,9 @@ const App: React.FC<AppProps> = () => {
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
       const text = CSVconvart(e.target?.result as string);
-      const fusoku = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認", "履修中"]);
-      const fusokuON = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認"]);
+      const fusoku = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認", "履修中"], true);
+      const fusokuON = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認"], true);
+      const rishuchu = Check(text, selectedMajor, ["履修中"], false);
       const recommended = Recommend(text, selectedMajor, fusoku);
       setSenmonkiso(recommended["専門基礎科目選択"]);
       setSenmon(recommended["専門科目選択"]);
@@ -42,7 +43,7 @@ const App: React.FC<AppProps> = () => {
       Object.keys(fusokuSelect).forEach((k) => {
         fusokuRishu[k] = {};
         Object.keys(fusokuSelect[k]).forEach((s) => {
-          fusokuRishu[k][s] = {fusoku: fusokuSelect[k][s], rishu:fusokuSelect[k][s]- fusoku["Select"][k][s]};
+          fusokuRishu[k][s] = {fusoku: fusokuSelect[k][s], rishu:rishuchu.Select[k][s]};
         });
       });
       setIsupload(true);
