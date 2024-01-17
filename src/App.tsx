@@ -90,11 +90,11 @@ const App: React.FC<AppProps> = () => {
   }
 
   const content = (
-    <div>大学院推薦入試を受験するには全取得単位数の内、A,A+の単位数が70%程度取得している必要があります</div>
+    <div>大学院推薦入試を受験するには全取得単位数のうち、70%程度以上でA,A+の成績を取得する必要があります</div>
   )
 
   const UnitCapReleaseContent = (
-    <div>単位上限を解放するには前学期中の履修単位のうち60%以上でA,A+の成績を取る必要があります</div>
+    <div>単位上限を解放するには前学期中の履修単位のうち、60%以上でA,A+の成績を取得する必要があります</div>
   )
   
   const getRandomElements = (arr:string[], num:number) => {
