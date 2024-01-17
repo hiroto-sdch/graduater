@@ -14,7 +14,7 @@ export const CollapseTable = (props: Props) =>{
     const {fusoku} = props;
     const tableColumns = [
         {
-            title: "授業名",
+            title: "不足している授業",
             dataIndex: "className",
             key:"className",
         }
