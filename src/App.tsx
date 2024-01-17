@@ -108,6 +108,9 @@ const App: React.FC<AppProps> = () => {
       <header className='App-header'>
         <div>
           <Title style={{ textAlign: 'center' }}>卒単チェッカー</Title>
+          <div style={{textAlign: 'center'}}>
+            <p>ドロップダウンメニューから所属している学群、学類、主専攻を選択し、TwinsからダウンロードしたCSVファイルをアップロードしてください</p>
+          </div>
           <div style={{ textAlign: 'center' }}>
             <Dropdown onChange={handleDropdownChange} />
           </div>
