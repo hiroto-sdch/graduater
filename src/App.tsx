@@ -17,7 +17,7 @@ const App: React.FC<AppProps> = () => {
   const [selectedMajor, setSelectedMajor] = useState<string>("");
   const [Message, setMessage] = useState<string[]>([]);
   const [SelectMessage, setSelectMessage] = useState<{[name: string]:any}>([]);
-  const [RecommendedExam, setRecommendedExam] = useState(0);
+  const [RecommendedExam, setRecommendedExam] = useState<number[]>([]);
   const [UnitCapRelease, setUnitCapRelease] = useState<number[]>([]);
   const [Senmonkiso, setSenmonkiso] = useState<string[]>([]);
   const [Senmon, setSenmon] = useState<string[]>([]);
@@ -81,9 +81,9 @@ const App: React.FC<AppProps> = () => {
     localStorage.setItem("currentTab", key);
   } 
   
-  const RecommendedExamText = '現在のA,A+の単位数の割合：' + RecommendedExam + '%';
+  const RecommendedExamText = '現在のA,A+の単位数：' + RecommendedExam[0] + '/' + RecommendedExam[1] + " (" + Math.ceil(RecommendedExam[0]/RecommendedExam[1]*100) + "%)";
 
-  let UnitCapReleaseText = "今学期履修中の単位内のA以上の単位数：" + UnitCapRelease[1] +"/" + UnitCapRelease[0];
+  let UnitCapReleaseText = "今学期履修中の単位内のA以上の単位数：" + UnitCapRelease[1] +"/" + UnitCapRelease[0] + " (" + Math.ceil(UnitCapRelease[1]/UnitCapRelease[0]*100) + "%)";
   if (UnitCapRelease[0] === UnitCapRelease[1]) {
     UnitCapReleaseText = '単位上限を55に解放することができます'
   }

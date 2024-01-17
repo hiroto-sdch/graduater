@@ -13,7 +13,8 @@ function CheckRecommendedExam(gradelist: Course[]){
         } 
     })
 
-    return Math.ceil(aGradeUnits/totalUnits*100);
+    //return Math.ceil(aGradeUnits/totalUnits*100);
+    return [aGradeUnits, totalUnits];
 }
 
 export default CheckRecommendedExam;
