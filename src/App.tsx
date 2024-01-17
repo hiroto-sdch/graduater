@@ -90,7 +90,7 @@ const App: React.FC<AppProps> = () => {
   }
 
   const content = (
-    <div>卒業までに履修する単位内で大学院推薦入試を受験することに最低限必要なA以上の単位数</div>
+    <div>大学院推薦入試を受験するには全取得単位数の内、A以上の単位数が70%程度取得している必要があります</div>
   )
 
   const UnitCapReleaseContent = (
