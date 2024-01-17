@@ -84,7 +84,7 @@ const App: React.FC<AppProps> = () => {
   
   const RecommendedExamText = '現在のA,A+の単位数の割合：' + RecommendedExam + '%';
 
-  let UnitCapReleaseText = "今学期履修中の単位内のA以上の単位数：" + UnitCapRelease[1] +"/" + UnitCapRelease[0];
+  let UnitCapReleaseText = "今学期履修中の単位内のA,A+の単位数：" + UnitCapRelease[1] +"/" + UnitCapRelease[0];
   if (UnitCapRelease[0] === UnitCapRelease[1]) {
     UnitCapReleaseText = '単位上限を55に解放することができます'
   }
