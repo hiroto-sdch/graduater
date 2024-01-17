@@ -1,7 +1,8 @@
 import Course from './Course';
 import codeType from './data/courseCodeTypes';
 
-function CheckCompulsory(gradeslist: Course[], requirement: any, target_grade: string[]) {
+// count_mode : 不足単位数を数える場合、true.  取った単位数を数える場合、false
+function CheckCompulsory(gradeslist: Course[], requirement: any, target_grade: string[], count_mode: boolean) {
 
     let checklist: {[name: string]: boolean} = {};  // 科目名：履修したかどうか
     let compulsory: string[] = requirement["courses"]["compulsory"];    // 必修単位の科目名
@@ -56,19 +57,35 @@ function CheckCompulsory(gradeslist: Course[], requirement: any, target_grade: s
         }
     });
 
-    let failureunit: string[] = [];
-    Object.keys(checklist).forEach((key) => {
-        if (checklist[key] === false){
-            failureunit.push(key);
-        }
-    });
-    gradeslist.forEach((grades) => {
-        if (Object.keys(checklist).includes(grades["name"])){
-            grades.checked = true;
-        }
-    });
-    
-    return failureunit;
+    if(count_mode){ // 不足単位数確認
+        let failureunit: string[] = [];
+        Object.keys(checklist).forEach((key) => {
+            if (checklist[key] === false){
+                failureunit.push(key);
+            }
+        });
+        gradeslist.forEach((grades) => {
+            if (Object.keys(checklist).includes(grades["name"])){
+                grades.checked = true;
+            }
+        });
+        
+        return failureunit;
+    } else {  // 取った単位数確認
+        gradeslist.forEach((grades) => {
+            if (Object.keys(checklist).includes(grades["name"])){
+                grades.checked = true;
+            }
+        });
+        let passedunit: string[] = [];
+        Object.keys(checklist).forEach((key) => {
+            if (checklist[key] === false){
+                passedunit.push(key);
+            }
+        });
+ 
+        return passedunit;
+    }
 }
 
 export default CheckCompulsory;
