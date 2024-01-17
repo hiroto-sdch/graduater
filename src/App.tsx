@@ -82,9 +82,9 @@ const App: React.FC<AppProps> = () => {
     localStorage.setItem("currentTab", key);
   } 
   
-  const RecommendedExamText = '現在のA,A+の単位数：' + RecommendedExam[0] + '/' + RecommendedExam[1] + " (" + Math.ceil(RecommendedExam[0]/RecommendedExam[1]*100) + "%)";
+  const RecommendedExamText = 'これまでに取得したA,A+の単位数：' + RecommendedExam[0] + '/' + RecommendedExam[1] + " (" + Math.ceil(RecommendedExam[0]/RecommendedExam[1]*100) + "%)";
 
-  let UnitCapReleaseText = "今学期履修中の単位内のA,A+の単位数：" + UnitCapRelease[1] +"/" + UnitCapRelease[0] + " (" + Math.ceil(UnitCapRelease[1]/UnitCapRelease[0]*100) + "%)";
+  let UnitCapReleaseText = "今年度履修中の単位内のA,A+の単位数：" + UnitCapRelease[1] +"/" + UnitCapRelease[0] + " (" + Math.ceil(UnitCapRelease[1]/UnitCapRelease[0]*100) + "%)";
 
   if (UnitCapRelease[0] === UnitCapRelease[1]) {
     UnitCapReleaseText = '単位上限を55に解放することができます'
@@ -95,7 +95,7 @@ const App: React.FC<AppProps> = () => {
   )
 
   const UnitCapReleaseContent = (
-    <div>単位上限を解放するには前学期中の履修単位のうち、60%以上でA,A+の成績を取得する必要があります</div>
+    <div>単位上限を解放するには今年度の履修単位のうち、60%以上でA,A+の成績を取得する必要があります</div>
   )
   
   const getRandomElements = (arr:string[], num:number) => {
