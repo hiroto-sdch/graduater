@@ -17,7 +17,7 @@ function Check(gradeslist: Course[], major: string, target_grade: string[]) {
     data["Compulsory"] = CheckCompulsory(gradeslist, requirement, target_grade);
     data["Select"] = CheckSelect(gradeslist, requirement, target_grade);
     data["UnitCapRelease"] = CheckUnitCapRelease(gradeslist); //単位上限を解放をするために必要なA以上の単位数を返却
-    data["RecommendedExam"] = CheckRecommendedExam(gradeslist); //現状のA+以上の単位数の割合を返却
+    data["RecommendedExam"] = CheckRecommendedExam(gradeslist); //院試を推薦で受けるために必要なA以上の単位数を返却
     console.log(data);
 
     return data;

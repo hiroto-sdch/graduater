@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons/lib/icons';
-import { Typography, Upload, Button, Switch, Tabs, Divider, Popover } from 'antd';
+import { Typography, Upload, Button, Tabs, Popover } from 'antd';
 import React, { useState } from 'react';
 import Check from './Check';
 import Dropdown from './Dropdown';
@@ -15,12 +15,8 @@ interface AppProps {}
 const App: React.FC<AppProps> = () => {
   const [isupload, setIsupload] = useState(false);
   const [selectedMajor, setSelectedMajor] = useState<string>("");
-  const [isCompON, setIsCompON] = useState(true);
   const [Message, setMessage] = useState<string[]>([]);
   const [SelectMessage, setSelectMessage] = useState<{[name: string]:any}>([]);
-  const [MessageON, setMessageON] = useState<string[]>([]);
-  const [SelectMessageON, setSelectMessageON] = useState<string[]>([]);
-  
   const [RecommendedExam, setRecommendedExam] = useState(0);
   const [UnitCapRelease, setUnitCapRelease] = useState<number[]>([]);
   const [Senmonkiso, setSenmonkiso] = useState<string[]>([]);
@@ -52,8 +48,6 @@ const App: React.FC<AppProps> = () => {
       setIsupload(true);
       setMessage(fusoku.Compulsory);
       setSelectMessage(fusokuRishu);
-      setMessageON(fusokuON.Compulsory);
-      setSelectMessageON(fusokuON.Select);
       setRecommendedExam(fusoku.RecommendedExam);
       setUnitCapRelease(fusoku.UnitCapRelease);
       //console.log(fusoku.RecommendedExam);
@@ -70,10 +64,6 @@ const App: React.FC<AppProps> = () => {
     setSelectedMajor(selectedValues.major);
   };
 
-  const handleIsCompON = (checked:boolean) =>{
-    setIsCompON(checked);
-  }
-
   const items = [
     {
       key:'1',
@@ -84,19 +74,6 @@ const App: React.FC<AppProps> = () => {
       key:'2',
       label:"選択科目",
       children:<SelectTable Select={SelectMessage}></SelectTable>,
-    },
-  ]
-
-  const itemsON = [
-    {
-      key:'1',
-      label:"必修科目",
-      children:<CollapseTable fusoku={MessageON}></CollapseTable>,
-    },
-    {
-      key:'2',
-      label:"選択科目",
-      children:<SelectTable Select={SelectMessageON}></SelectTable>,
     },
   ]
 
@@ -112,7 +89,7 @@ const App: React.FC<AppProps> = () => {
   }
 
   const content = (
-    <div>大学院推薦入試にはA,A+の評価を取得した単位数が、総取得単位数の概ね70%以上が必要です</div>
+    <div>卒業までに履修する単位内で大学院推薦入試を受験することに最低限必要なA以上の単位数</div>
   )
 
   const UnitCapReleaseContent = (
@@ -140,12 +117,7 @@ const App: React.FC<AppProps> = () => {
                 Upload CSV file
               </Button>
             </Upload>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-              <span>履修中の単位を取得済みとする</span>
-              <Switch style={{ marginLeft: '8px' }} checked={ isCompON } onChange={ handleIsCompON } />
-            </div>
-            {isupload && isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
-            {isupload && !isCompON && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={itemsON} onChange={ONtabchange}></Tabs>}
+            {isupload && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
           </div>
 
           <div style={{ textAlign: 'center'}}>
