@@ -13,6 +13,10 @@ import earth21_course1 from './data/earth21_course1.json';
 import japanese21 from './data/japanese21.json';
 import math21 from './data/math21.json';
 import psych21 from './data/psych21.json';
+import mast21 from './data/mast21.json';
+import klis_irm21 from './data/klis_irm21.json';
+import klis_kis21 from './data/klis_kis21.json';
+import klis_ksc21 from './data/klis_ksc21.json';
 
 function Requirement(major :string) {
     let requirement: any;
@@ -61,6 +65,18 @@ function Requirement(major :string) {
             break;
         case "日本語・日本語文化学":
             requirement = japanese21;
+            break;
+        case "情報資源経営":
+            requirement = klis_irm21;
+            break;
+        case "知識情報システム":
+            requirement = klis_kis21;
+            break;
+        case "知識化学":
+            requirement = klis_ksc21;
+            break;
+        case "情報メディア創成":
+            requirement = mast21;
             break;
         default:
             requirement = coins_soft21;
