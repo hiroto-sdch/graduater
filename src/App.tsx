@@ -18,7 +18,7 @@ const App: React.FC<AppProps> = () => {
   const [Message, setMessage] = useState<string[]>([]);
   const [SelectMessage, setSelectMessage] = useState<{[name: string]:any}>([]);
   const [RecommendedExam, setRecommendedExam] = useState(0);
-  const [UnitCapRelease, setUnitCapRelease] = useState(0);
+  const [UnitCapRelease, setUnitCapRelease] = useState<number[]>([]);
   const [Senmonkiso, setSenmonkiso] = useState<string[]>([]);
   const [Senmon, setSenmon] = useState<string[]>([]);
 
@@ -81,17 +81,19 @@ const App: React.FC<AppProps> = () => {
     localStorage.setItem("currentTab", key);
   } 
   
-  let RecommendedExamText = '大学院推薦入試を受けることができます'
-  if (RecommendedExam !== 0) {
-    RecommendedExamText = "大学院推薦入試に必要なA以上の単位数：" + RecommendedExam;
-  }
-  let UnitCapReleaseText = "今学期履修中の単位内で単位上限の解放に必要なA以上の単位数：" + UnitCapRelease;
-  if (UnitCapRelease === 0) {
+  const RecommendedExamText = '現在のA,A+の単位数の割合：' + RecommendedExam + '%';
+
+  let UnitCapReleaseText = "今学期履修中の単位内のA以上の単位数：" + UnitCapRelease[1] +"/" + UnitCapRelease[0];
+  if (UnitCapRelease[0] === UnitCapRelease[1]) {
     UnitCapReleaseText = '単位上限を55に解放することができます'
   }
 
   const content = (
     <div>卒業までに履修する単位内で大学院推薦入試を受験することに最低限必要なA以上の単位数</div>
+  )
+
+  const UnitCapReleaseContent = (
+    <div>単位上限を解放するには前学期中の履修単位のうち60%以上でA以上の成績を取る必要があります</div>
   )
   
   const getRandomElements = (arr:string[], num:number) => {
@@ -117,13 +119,14 @@ const App: React.FC<AppProps> = () => {
             </Upload>
             {isupload && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
           </div>
+
           <div style={{ textAlign: 'center'}}>
-            {RecommendedExam !== 0 && <Popover placement='bottom' content={content}><span>{isupload && RecommendedExamText}</span></Popover>}
-            {RecommendedExam === 0 && <span>{isupload && RecommendedExamText}</span>}
+            {isupload && <Popover placement='bottom' content={content}><span>{RecommendedExamText}</span></Popover>}
           </div>
           <div style={{ textAlign: 'center'}}>
-            <span>{isupload && UnitCapReleaseText}</span>
+            {isupload && <Popover placement='bottom' content={UnitCapReleaseContent}><span>{UnitCapReleaseText}</span></Popover>}
           </div>
+
           <div>
             {isupload && <h4>未履修専門基礎科目(一部抜粋)</h4>}
             {isupload && randomSenmonkiso.map((item, index)=>(
