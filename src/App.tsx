@@ -82,7 +82,7 @@ const App: React.FC<AppProps> = () => {
     localStorage.setItem("currentTab", key);
   } 
   
-  const RecommendedExamText = 'これまでに履修した単位の内、A,A+の単位数：' + RecommendedExam[0] + '/' + RecommendedExam[1] + " (" + Math.ceil(RecommendedExam[0]/RecommendedExam[1]*100) + "%)";
+  const RecommendedExamText = 'これまでに履修した単位の内、A,A+の取得数：' + RecommendedExam[0] + '/' + RecommendedExam[1] + " (" + Math.ceil(RecommendedExam[0]/RecommendedExam[1]*100) + "%)";
 
   let UnitCapReleaseText = "今年履修した単位の内、A,A+の取得数：" + UnitCapRelease[1] +"/" + UnitCapRelease[0] + " (" + Math.ceil(UnitCapRelease[1]/UnitCapRelease[0]*100) + "%)";
 
