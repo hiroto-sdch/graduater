@@ -17,7 +17,8 @@ interface Group{
     name : string;
 }
 
-function CheckSelect(gradeslist: Course[], requirement: any, target_grade: string[]): {[name : string]: {[name : string]: number}} {
+// count_mode : 不足単位数を数える場合、true.  取った単位数を数える場合、false
+function CheckSelect(gradeslist: Course[], requirement: any, target_grade: string[], count_mode: boolean): {[name : string]: {[name : string]: number}} {
     const matchRequire = (id : string, require : string[]) : boolean => {
         return require.some((e) => {
             if(e.startsWith("*")){ // code type 使用
@@ -93,15 +94,27 @@ function CheckSelect(gradeslist: Course[], requirement: any, target_grade: strin
     
     const tmp: {[name : string]: {[name : string]: number}} = {};
     groups.forEach((e, i) => {
-        const hoge = (e.min - groupCheckList[i].map((e) => e.unit).reduce((p, e) => p+e , 0));
-        tmp[e.name] = {};
-        tmp[e.name]["全体"] = (hoge > 0 ? hoge : 0);
-        selectRequirements.forEach((s, i) => {
-            if(s.group_id === e.id){
-                const fuga = (s.min - selectCheckList[i].map((s) => s.unit).reduce((p, s) => p+s , 0));
-                tmp[e.name][s.name] = (fuga > 0 ? fuga : 0);
-            }
-        })
+        if(count_mode){ // 不足単位数を確認
+            const hoge = (e.min - groupCheckList[i].map((e) => e.unit).reduce((p, e) => p+e , 0));
+            tmp[e.name] = {};
+            tmp[e.name]["全体"] = (hoge > 0 ? hoge : 0);
+            selectRequirements.forEach((s, i) => {
+                if(s.group_id === e.id){
+                    const fuga = (s.min - selectCheckList[i].map((s) => s.unit).reduce((p, s) => p+s , 0));
+                    tmp[e.name][s.name] = (fuga > 0 ? fuga : 0);
+                }
+            });
+        } else { // 取った単位数を確認
+            const hoge = (groupCheckList[i].map((e) => e.unit).reduce((p, e) => p+e , 0));
+            tmp[e.name] = {};
+            tmp[e.name]["全体"] = hoge;
+            selectRequirements.forEach((s, i) => {
+                if(s.group_id === e.id){
+                    const fuga = (selectCheckList[i].map((s) => s.unit).reduce((p, s) => p+s , 0));
+                    tmp[e.name][s.name] = fuga;
+                }
+            });
+        }
     });
 
     // console.log(selectCheckList);
