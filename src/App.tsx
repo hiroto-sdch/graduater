@@ -17,8 +17,8 @@ const App: React.FC<AppProps> = () => {
   const [selectedMajor, setSelectedMajor] = useState<string>("");
   const [Message, setMessage] = useState<string[]>([]);
   const [SelectMessage, setSelectMessage] = useState<{[name: string]:any}>([]);
-  const [RecommendedExam, setRecommendedExam] = useState(0);
-  const [UnitCapRelease, setUnitCapRelease] = useState(0);
+  const [RecommendedExam, setRecommendedExam] = useState<number[]>([]);
+  const [UnitCapRelease, setUnitCapRelease] = useState<number[]>([]);
   const [Senmonkiso, setSenmonkiso] = useState<string[]>([]);
   const [Senmon, setSenmon] = useState<string[]>([]);
 
@@ -26,8 +26,9 @@ const App: React.FC<AppProps> = () => {
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
       const text = CSVconvart(e.target?.result as string);
-      const fusoku = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認", "履修中"]);
-      const fusokuON = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認"]);
+      const fusoku = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認", "履修中"], true);
+      const fusokuON = Check(text, selectedMajor, ["A+", "A", "B", "C", "P", "認"], true);
+      const rishuchu = Check(text, selectedMajor, ["履修中"], false);
       const recommended = Recommend(text, selectedMajor, fusoku);
       setSenmonkiso(recommended["専門基礎科目選択"]);
       setSenmon(recommended["専門科目選択"]);
@@ -42,7 +43,7 @@ const App: React.FC<AppProps> = () => {
       Object.keys(fusokuSelect).forEach((k) => {
         fusokuRishu[k] = {};
         Object.keys(fusokuSelect[k]).forEach((s) => {
-          fusokuRishu[k][s] = {fusoku: fusokuSelect[k][s], rishu:fusokuSelect[k][s]- fusoku["Select"][k][s]};
+          fusokuRishu[k][s] = {fusoku: fusokuSelect[k][s], rishu:rishuchu.Select[k][s]};
         });
       });
       setIsupload(true);
@@ -81,17 +82,20 @@ const App: React.FC<AppProps> = () => {
     localStorage.setItem("currentTab", key);
   } 
   
-  let RecommendedExamText = '大学院推薦入試を受けることができます'
-  if (RecommendedExam !== 0) {
-    RecommendedExamText = "大学院推薦入試に必要なA以上の単位数：" + RecommendedExam;
-  }
-  let UnitCapReleaseText = "今学期履修中の単位内で単位上限の解放に必要なA以上の単位数：" + UnitCapRelease;
-  if (UnitCapRelease === 0) {
+  const RecommendedExamText = 'これまでに履修した単位の内、A,A+の取得数：' + RecommendedExam[0] + '/' + RecommendedExam[1] + " (" + Math.ceil(RecommendedExam[0]/RecommendedExam[1]*100) + "%)";
+
+  let UnitCapReleaseText = "今年履修した単位の内、A,A+の取得数：" + UnitCapRelease[1] +"/" + UnitCapRelease[0] + " (" + Math.ceil(UnitCapRelease[1]/UnitCapRelease[0]*100) + "%)";
+
+  if (UnitCapRelease[0] === UnitCapRelease[1]) {
     UnitCapReleaseText = '単位上限を55に解放することができます'
   }
 
   const content = (
-    <div>卒業までに履修する単位内で大学院推薦入試を受験することに最低限必要なA以上の単位数</div>
+    <div>大学院推薦入試を受験するには全取得単位数のうち、70%程度以上でA,A+の成績を取得する必要があります</div>
+  )
+
+  const UnitCapReleaseContent = (
+    <div>単位上限を解放するには今年度の履修単位のうち、60%以上でA,A+の成績を取得する必要があります</div>
   )
   
   const getRandomElements = (arr:string[], num:number) => {
@@ -106,6 +110,9 @@ const App: React.FC<AppProps> = () => {
       <header className='App-header'>
         <div>
           <Title style={{ textAlign: 'center' }}>卒単チェッカー</Title>
+          <div style={{textAlign: 'center'}}>
+            <p>ドロップダウンメニューから所属している学群、学類、主専攻を選択し、TwinsからダウンロードしたCSVファイルをアップロードしてください</p>
+          </div>
           <div style={{ textAlign: 'center' }}>
             <Dropdown onChange={handleDropdownChange} />
           </div>
@@ -117,13 +124,14 @@ const App: React.FC<AppProps> = () => {
             </Upload>
             {isupload && <Tabs defaultActiveKey={localStorage.getItem("currentTab") ?? '1'} items={items} onChange={ONtabchange}></Tabs>}
           </div>
+
           <div style={{ textAlign: 'center'}}>
-            {RecommendedExam !== 0 && <Popover placement='bottom' content={content}><span>{isupload && RecommendedExamText}</span></Popover>}
-            {RecommendedExam === 0 && <span>{isupload && RecommendedExamText}</span>}
+            {isupload && <Popover placement='bottom' content={content}><span>{RecommendedExamText}</span></Popover>}
           </div>
           <div style={{ textAlign: 'center'}}>
-            <span>{isupload && UnitCapReleaseText}</span>
+            {isupload && <Popover placement='bottom' content={UnitCapReleaseContent}><span>{UnitCapReleaseText}</span></Popover>}
           </div>
+
           <div>
             {isupload && <h4>未履修専門基礎科目(一部抜粋)</h4>}
             {isupload && randomSenmonkiso.map((item, index)=>(

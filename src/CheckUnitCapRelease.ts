@@ -16,9 +16,9 @@ function CheckUnitCapRelease(gradeslist: Course[]) {
             // }
         } 
     })
-    let needAUnit = Math.ceil(totalUnits * 0.6 - aGradeUnits)
+    let needAUnit = Math.ceil(totalUnits * 0.6)
 
-    return needAUnit;
+    return [needAUnit, aGradeUnits];
 }
 
 export default CheckUnitCapRelease;
