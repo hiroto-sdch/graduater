@@ -58,8 +58,8 @@ const App: React.FC<AppProps> = () => {
     return false;
   };
 
-  console.log(RecommendedExam);
-  console.log(UnitCapRelease);
+  // console.log(RecommendedExam);
+  // console.log(UnitCapRelease);
 
   const handleDropdownChange = (selectedValues: { college: string | null; department: string | null; major: string }) => {
     setSelectedMajor(selectedValues.major);
