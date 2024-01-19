@@ -5,7 +5,7 @@ function CheckRecommendedExam(gradelist: Course[]){
     let aGradeUnits = 0;
 
     gradelist.forEach((e) => {
-        if (e.grade !== 'P' && e.grade !== 'D' && e.grade !== "履修中") {
+        if (e.grade !== 'P' && e.grade !== 'F' && e.grade !== 'D' && e.grade !== "履修中") {
             totalUnits += e.unit;
             if (e.grade === 'A' || e.grade === 'A+') {
                 aGradeUnits += e.unit;
