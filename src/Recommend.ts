@@ -38,6 +38,7 @@ function Recommend(gradeslist: Course[], major: string, data: any) {
     }
 
     const requirement = Requirement(major);
+    const compulsoryRequirements : string[] = requirement["courses"]["compulsory"];
     const selectRequirements: SelectRequire[] = requirement["courses"]["select"].map((e:(string[] | number | boolean | string)[]) => {
         return {
             ids : e[0],
@@ -70,7 +71,7 @@ function Recommend(gradeslist: Course[], major: string, data: any) {
     let searchid: {[name: string]: string[]} = {};
     groups.forEach((group) => {
         if(shortage.includes(group.name)){
-            searchid[group.name] = []
+            searchid[group.name] = [];
             selectRequirements.forEach((e) =>{
                 if(e.group_id === group.id){
                     searchid[group.name].push(...e.ids);
@@ -79,10 +80,16 @@ function Recommend(gradeslist: Course[], major: string, data: any) {
         }
     });
 
+    console.log("↓serchid");
+    console.log(searchid);
+
+    console.log(compulsoryRequirements);
+    console.log(sublist.map((e) => e[1]).slice(0, 50));
+
     let baserec: {[name: string]: string[]} = {};
     Object.keys(searchid).forEach((key) => {
         baserec[key] = sublist.filter((subject) => {
-            return matchRequire(subject[0], searchid[key]);
+            return (matchRequire(subject[0], searchid[key]) && !(compulsoryRequirements.some((comp) => comp.split("//").some((e) => e.replace(/\[|\]|\s|'/g,"").split(",").includes(subject[1])))));
         }).map((e) => e[0]);
     });
 
@@ -99,7 +106,7 @@ function Recommend(gradeslist: Course[], major: string, data: any) {
             })
         }
     })
-    // console.log(recommend);
+    console.log(recommend);
     return recommend;
 }
 
