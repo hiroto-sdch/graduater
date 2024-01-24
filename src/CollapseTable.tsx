@@ -61,7 +61,7 @@ export const SelectTable = (selected: Selected) =>{
             rishu: numtani[index][e].rishu
         }));
         return (
-        <Collapse style={{ backgroundColor: +numtani[index]["全体"].fusoku > 0 ? 'pink' : 'white' }}>
+        <Collapse style={{ backgroundColor: numtani[index]["全体"].fusoku > 0 ? 'pink' : 'white' }}>
             <Panel header={item+"    "+numtani[index]["全体"].fusoku+"単位不足    "+numtani[index]["全体"].rishu+"単位履修中"} key={index}>
                 <Table columns={tableColumns} dataSource={tabledata} />
             </Panel>
