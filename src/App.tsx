@@ -149,13 +149,12 @@ const App: React.FC<AppProps> = () => {
               </li>
             ))}
           </div>
-          {isupload && 
+          {isupload &&
           <div>
-            <Space>
+            <Space/>
             <Button icon={<TwitterOutlined/>}>
             <a href={`https://twitter.com/intent/tweet?url=https://graduation-checker-itf.netlify.app%0a&text=今までに${RecommendedExam[1]}単位を習得しました！%0aあなたも単位を確認しませんか？%0a`}>Twitterに共有する</a>
             </Button>
-            </Space>
           </div>}
         </div>
       </header>
