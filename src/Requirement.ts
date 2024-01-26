@@ -72,7 +72,7 @@ function Requirement(major :string) {
         case "知識情報システム":
             requirement = klis_kis21;
             break;
-        case "知識化学":
+        case "知識科学":
             requirement = klis_ksc21;
             break;
         case "情報メディア創成":
