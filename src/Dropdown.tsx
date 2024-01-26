@@ -46,13 +46,13 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
           value={selectedCollege}
         >
           <Option value="人文・文化学群">人文・文化学群</Option>
-          <Option value="社会・国際学群">社会・国際学群</Option>
+          <Option value="社会・国際学群" disabled={true}>社会・国際学群(準備中)</Option>
           <Option value="人間学群">人間学群</Option>
           <Option value="生命環境学群">生命環境学群</Option>
           <Option value="理工学群">理工学群</Option>
           <Option value="情報学群">情報学群</Option>
-          <Option value="医学群">医学群</Option>
-          <Option value="体育専門学群">体育専門学群</Option>
+          <Option value="医学群" disabled={true}>医学群(準備中)</Option>
+          <Option value="体育専門学群" disabled={true}>体育専門学群(準備中)</Option>
           <Option value="芸術専門学群">芸術専門学群</Option>
         </Select>
   
@@ -65,39 +65,39 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
           >
             {selectedCollege === '人文・文化学群' && (
               <>
-                <Option value="人文学類">人文学類</Option>
-                <Option value="比較文化学類">比較文化学類</Option>
+                <Option value="人文学類" disabled={true}>人文学類(準備中)</Option>
+                <Option value="比較文化学類" disabled={true}>比較文化学類(準備中)</Option>
                 <Option value="日本語・日本文化学類">日本語・日本文化学類</Option>
               </>
             )}
             {selectedCollege === '社会・国際学群' && (
               <>
-                <Option value="社会学類">社会学類</Option>
-                <Option value="国際総合学類">国際総合学類</Option>
+                <Option value="社会学類" disabled={true}>社会学類(準備中)</Option>
+                <Option value="国際総合学類" disabled={true}>国際総合学類(準備中)</Option>
               </>
             )}
             {selectedCollege === '人間学群' && (
               <>
-                <Option value="教育学類">教育学類</Option>
+                <Option value="教育学類" disabled={true}>教育学類(準備中)</Option>
                 <Option value="心理学類">心理学類</Option>
-                <Option value="障害科学類">障害科学類</Option>
+                <Option value="障害科学類" disabled={true}>障害科学類(準備中)</Option>
               </>
             )}
             {selectedCollege === '生命環境学群' && (
               <>
-                <Option value="生物学類">生物学類</Option>
-                <Option value="生物資源学類">生物資源学類</Option>
+                <Option value="生物学類" disabled={true}>生物学類(準備中)</Option>
+                <Option value="生物資源学類" disabled={true}>生物資源学類(準備中)</Option>
                 <Option value="地球学類">地球学類</Option>
               </>
             )}
             {selectedCollege === '理工学群' && (
               <>
                 <Option value="数学類">数学類</Option>
-                <Option value="物理学類">物理学類</Option>
-                <Option value="化学類">化学類</Option>
+                <Option value="物理学類" disabled={true}>物理学類(準備中)</Option>
+                <Option value="化学類" disabled={true}>化学類(準備中)</Option>
                 <Option value="応用理工学類">応用理工学類</Option>
                 <Option value="工学システム学類">工学システム学類</Option>
-                <Option value="社会工学類">社会工学類</Option>
+                <Option value="社会工学類" disabled={true}>社会工学類(準備中)</Option>
               </>
             )}
             {selectedCollege === '情報学群' && (
@@ -109,14 +109,14 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
             )}
             {selectedCollege === '医学群' && (
               <>
-                <Option value="医学類">医学類</Option>
-                <Option value="看護学類">看護学類</Option>
-                <Option value="医療科学類">医療科学類</Option>
+                <Option value="医学類" disabled={true}>医学類(準備中)</Option>
+                <Option value="看護学類" disabled={true}>看護学類(準備中)</Option>
+                <Option value="医療科学類" disabled={true}>医療科学類(準備中)</Option>
               </>
             )}
             {selectedCollege === '体育専門学群' && (
               <>
-                <Option value="体育専門">体育専門</Option>
+                <Option value="体育専門" disabled={true}>体育専門(準備中)</Option>
               </>
             )}
             {selectedCollege === '芸術専門学群' && (
@@ -149,7 +149,7 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
             {selectedDepartment === '日本語・日本文化学類' && (
               <>
                 <Option value="日本語・日本語文化学">日本語・日本語文化学</Option>
-                <Option value="日本語教師養成">日本語教師養成</Option>
+                <Option value="日本語教師養成" disabled={true}>日本語教師養成(準備中)</Option>
               </>
             )}
             {selectedDepartment === '社会学類' && (
@@ -196,7 +196,7 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
             {selectedDepartment === '地球学類' && (
               <>
                 <Option value="地球環境学">地球環境学</Option>
-                <Option value="地球進化学">地球進化学</Option>
+                <Option value="地球進化学" disabled={true}>地球進化学(準備中)</Option>
               </>
             )}
             {selectedDepartment === '数学類' && (
