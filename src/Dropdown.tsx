@@ -44,6 +44,7 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
           placeholder="学群を選択してください。"
           onChange={handleCollegeChange}
           value={selectedCollege}
+          listHeight={300}
         >
           <Option value="人文・文化学群">人文・文化学群</Option>
           <Option value="社会・国際学群" disabled={true}>社会・国際学群(準備中)</Option>
